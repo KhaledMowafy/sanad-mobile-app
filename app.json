@@ -41,10 +41,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "locales": {
-      "ar": "./locales/ar.json",
-      "en": "./locales/en.json"
-    },
     "plugins": [
       "expo-router",
       "expo-secure-store",
