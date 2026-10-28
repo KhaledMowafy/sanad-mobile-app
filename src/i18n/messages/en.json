@@ -1,0 +1,856 @@
+{
+  "meta": {
+    "title": "Sanadak | Legal assistant for Egyptian law",
+    "description": "Legal answers grounded in the text of Egyptian law, with the article and the law each answer rests on.",
+    "siteName": "Sanadak",
+    "termsTitle": "Terms of use | Sanadak",
+    "termsDescription": "Terms of use for Sanadak, the legal assistant for Egyptian law.",
+    "privacyTitle": "Privacy policy | Sanadak",
+    "privacyDescription": "How Sanadak handles your conversations and documents.",
+    "signUpTitle": "Create an account | Sanadak",
+    "signUpDescription": "Create your Sanadak account and start your first legal conversation.",
+    "signInTitle": "Sign in | Sanadak",
+    "chatTitle": "Conversation | Sanadak",
+    "verifyTitle": "Verify your account | Sanadak",
+    "forgotTitle": "Reset your password | Sanadak",
+    "resetTitle": "New password | Sanadak",
+    "profileTitle": "My account | Sanadak",
+    "billingTitle": "Plans and top-ups | Sanadak",
+    "paymentTitle": "Payment result | Sanadak"
+  },
+  "common": {
+    "brand": "Sanadak",
+    "toggleTheme": "Toggle theme",
+    "switchLanguage": "العربية",
+    "skipToContent": "Skip to content",
+    "backToSite": "Back to the site"
+  },
+  "nav": {
+    "label": "Main navigation",
+    "home": "Sanadak, home page",
+    "how": "How it works",
+    "privacy": "Privacy",
+    "faq": "FAQ",
+    "signIn": "Sign in",
+    "signUp": "Create account",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "features": "Features",
+    "pricing": "Plans"
+  },
+  "hero": {
+    "title": "Legal answers grounded in the text of Egyptian law",
+    "body": "Get an accurate answer grounded in Egyptian law and its articles, and in more than 1000 legal commentaries.",
+    "ask": {
+      "title": "Ask Sanadak, get an answer",
+      "label": "Write your legal question",
+      "placeholder": "Write your legal question here...",
+      "attach": "Attach a file",
+      "send": "Send",
+      "gate": {
+        "title": "Sign in to get your answer",
+        "body": "Create a free account or sign in to send your question and get an answer grounded in Egyptian law.",
+        "signUp": "Create account",
+        "signIn": "Sign in",
+        "close": "Close"
+      }
+    }
+  },
+  "how": {
+    "title": "From question to text",
+    "intro": "Sanadak does not just answer. It puts the article the answer rests on in front of you, so you can check it yourself.",
+    "steps": [
+      {
+        "title": "Ask the way you would ask a colleague",
+        "body": "Write your question in Arabic in your own words, or attach a contract, a police report or a photo of a document for Sanadak to read with you."
+      },
+      {
+        "title": "Check the source",
+        "body": "Every answer carries the articles it rests on. Select any article to read its full text."
+      },
+      {
+        "title": "Build on it in your work",
+        "body": "Copy the answer with its references, or export it to a memo, and use it to find defences and analyse documents."
+      }
+    ],
+    "demoQuestion": "How is the deadline for appealing a civil judgment calculated?",
+    "demoLaw": "Civil Code",
+    "demoArticles": [
+      "Art. 157",
+      "Art. 218",
+      "Art. 219"
+    ],
+    "copyWithReferences": "Copy with references",
+    "exportToMemo": "Export to a memo"
+  },
+  "privacy": {
+    "title": "Where your data is processed",
+    "body": "The AI model in Sanadak runs on servers we own and operate.",
+    "points": [
+      "Your conversations are tied to your account and no other user can reach them.",
+      "You can delete any conversation at any time."
+    ],
+    "flowLabel": "Diagram: your device connects to Sanadak servers, where the model and the legislation database run.",
+    "you": "Your device",
+    "link": "Your question and documents",
+    "server": "Sanadak servers",
+    "model": "AI model",
+    "texts": "Legislation database"
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "contact": "Can't find what you are looking for? Write to us at {email}",
+    "contactEmail": "",
+    "items": [
+      {
+        "q": "Does Sanadak replace a lawyer?",
+        "a": "No. Sanadak is a tool that assists the lawyer in understanding cases and finding weak points in seconds, and it does not replace the lawyer."
+      },
+      {
+        "q": "How does Sanadak help a lawyer day to day?",
+        "a": "It cuts the time spent searching legal texts to seconds, helps you find defences and read and analyse contracts and reports, and puts the article behind each answer in front of you. You spend your time on case strategy instead of looking things up."
+      },
+      {
+        "q": "Where does Sanadak get its answers?",
+        "a": "From the Egyptian legislation loaded into its text database. Each answer shows the articles it relied on, so you can review them yourself before relying on them."
+      },
+      {
+        "q": "Which laws does Sanadak cover?",
+        "a": "The current content includes major laws such as the Civil Code, the Penal Code, the Code of Criminal Procedure and the Law on the Legal Profession, and it grows as new legislation is added. If the article you ask about is not in the database, Sanadak says so instead of guessing."
+      },
+      {
+        "q": "Does Sanadak write full legal memos?",
+        "a": "Sanadak is an assistant, not a replacement for the lawyer. It supplies the texts and defences relevant to your case and suggests a suitable structure, but the final drafting stays with the lawyer who knows the details of the case."
+      },
+      {
+        "q": "Are my conversations and documents confidential?",
+        "a": "Your conversations are saved in your account and no other user can reach them, and you can delete any conversation at any time. The answering model runs on our servers."
+      },
+      {
+        "q": "Can I upload a contract or a report for review?",
+        "a": "Yes. Attach a document or a scanned image and ask Sanadak about its terms or your legal position based on it."
+      },
+      {
+        "q": "Does it support English?",
+        "a": "Yes. Arabic is the primary language, and you can switch to English from the top of the page. Legal texts stay in their official language, with an unofficial translation."
+      }
+    ]
+  },
+  "footer": {
+    "tagline": "A legal assistant for Egyptian law. It answers in Arabic and puts the article it relies on in front of you.",
+    "product": "Product",
+    "account": "Account",
+    "legal": "Legal",
+    "how": "How it works",
+    "privacy": "Privacy",
+    "faq": "FAQ",
+    "signIn": "Sign in",
+    "signUp": "Create account",
+    "terms": "Terms of use",
+    "privacyPolicy": "Privacy policy",
+    "rights": "© {year} Sanadak. All rights reserved.",
+    "disclaimer": "Sanadak provides general legal information and does not replace advice from a qualified lawyer.",
+    "features": "Features",
+    "pricing": "Plans"
+  },
+  "legal": {
+    "pending": "The full text of this page is being prepared and will be published here.",
+    "termsTitle": "Terms of use",
+    "privacyTitle": "Privacy policy",
+    "privacySummaryTitle": "Summary of how data is handled",
+    "privacySummary": [
+      "The AI model in Sanadak runs on servers we own and operate.",
+      "Your conversations are tied to your account and no other user can reach them, and you can delete any conversation at any time."
+    ],
+    "disclaimerTitle": "Notice",
+    "disclaimer": "Sanadak provides general legal information and does not replace advice from a qualified lawyer. Review the official texts before relying on them."
+  },
+  "auth": {
+    "panel": {
+      "title": "Legal answers that know their source",
+      "body": "Every answer in Sanadak comes with the article and the law it rests on, so you can read the text yourself before you rely on it.",
+      "cardLabel": "Example: text of Article 147 of the Civil Code",
+      "cardTitle": "Article 147",
+      "cardLaw": "Egyptian Civil Code, No. <n>131</n> of <y>1948</y>",
+      "cardText": "The contract is the law of the parties. It may not be revoked or amended except by their agreement or for reasons the law provides.",
+      "inForce": "In force",
+      "copy": "Copy text",
+      "foot": "Your conversations are tied to your account, and you can delete them at any time."
+    },
+    "fields": {
+      "email": "Email address",
+      "emailPlaceholder": "name@example.com",
+      "password": "Password",
+      "name": "Full name",
+      "code": "Verification code",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password"
+    },
+    "signIn": {
+      "title": "Sign in",
+      "subtitle": "Welcome back. Enter your details to continue to your conversations.",
+      "submit": "Sign in",
+      "submitting": "Signing in",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create account",
+      "legal": "By continuing, you agree to the <terms>Terms of use</terms> and the <privacy>Privacy policy</privacy>.",
+      "verifiedNotice": "Your account is verified. You can sign in now.",
+      "notVerified": "Haven't verified your account yet?",
+      "enterCode": "Enter your verification code",
+      "forgot": "Forgot your password?",
+      "resetNotice": "Your password was changed. Sign in with the new one."
+    },
+    "signUp": {
+      "title": "Create an account",
+      "subtitle": "Two minutes to start your first legal conversation.",
+      "submit": "Create account",
+      "submitting": "Creating your account",
+      "terms": "I agree to the <terms>Terms of use</terms> and the <privacy>Privacy policy</privacy>, and I understand that Sanadak does not replace a lawyer.",
+      "haveAccount": "Already have an account?",
+      "signInLink": "Sign in",
+      "passwordRules": "Your password must contain:",
+      "ruleLength": "At least 8 characters",
+      "ruleUppercase": "At least one uppercase letter (A-Z)",
+      "ruleSpecial": "At least one special character",
+      "ruleMet": "Met",
+      "ruleUnmet": "Not met yet"
+    },
+    "verify": {
+      "title": "Enter your verification code",
+      "subtitle": "We sent a six-digit code to your email. Enter it to activate your account.",
+      "sentTo": "The code was sent to <addr>{email}</addr>",
+      "submit": "Verify account",
+      "submitting": "Verifying",
+      "resend": "Send a new code",
+      "resent": "We sent a new code to your email.",
+      "backToSignIn": "Back to sign in"
+    },
+    "errors": {
+      "invalid_email": "Enter a valid email address.",
+      "password_required": "Enter your password.",
+      "name_required": "Enter your name.",
+      "terms_required": "You need to accept the terms to continue.",
+      "password_too_short": "That password is too short. Use at least 8 characters.",
+      "password_needs_uppercase": "Add at least one uppercase letter.",
+      "password_needs_special": "Add at least one special character.",
+      "password_too_common": "That password is too common. Choose another one.",
+      "invalid": "This value is not valid.",
+      "invalid_verification_code": "The code has six digits.",
+      "code_rejected": "That code is wrong or has expired. Request a new one.",
+      "email_registered": "This email is already registered. <link>Sign in</link> instead.",
+      "invalid_credentials": "The email or password is incorrect.",
+      "rate_limited": "Too many attempts. Wait a little and try again.",
+      "unavailable": "We could not reach the service. Try again shortly.",
+      "forbidden": "This request cannot be completed for your account.",
+      "account_inactive": "This account is inactive. Contact support to have it reactivated.",
+      "account_locked": "This account is locked for now. Try again in {minutes} minutes."
+    },
+    "forgot": {
+      "title": "Reset your password",
+      "subtitle": "Enter your email and we will send a code to set a new password.",
+      "submit": "Send the code",
+      "submitting": "Sending",
+      "back": "Back to sign in"
+    },
+    "reset": {
+      "title": "Set a new password",
+      "subtitle": "If that address is registered, we have sent it a six-digit code.",
+      "newPassword": "New password",
+      "submit": "Change password",
+      "submitting": "Changing",
+      "resend": "Send a new code",
+      "resent": "If the address is registered, we sent a new code."
+    }
+  },
+  "app": {
+    "greeting": "Welcome, {name}",
+    "unavailable": "We could not load your account",
+    "soon": "The conversation screen is being built.",
+    "signOut": "Sign out",
+    "demo": "Demo mode: the data shown is sample data, not from your account."
+  },
+  "chat": {
+    "newChat": "New conversation",
+    "sidebarLabel": "Conversations",
+    "historyLabel": "Conversation history",
+    "searchLabel": "Search conversations",
+    "searchPlaceholder": "Search conversations",
+    "noResults": "No conversations match.",
+    "emptyHistory": "Your conversations will appear here.",
+    "collapseSidebar": "Collapse sidebar",
+    "expandSidebar": "Open sidebar",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "signOut": "Sign out",
+    "groups": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "last7days": "Last 7 days",
+      "older": "Older"
+    },
+    "item": {
+      "options": "Conversation options",
+      "rename": "Rename",
+      "delete": "Delete conversation",
+      "renameTitle": "Rename conversation",
+      "renameLabel": "Conversation title",
+      "save": "Save",
+      "saving": "Saving",
+      "cancel": "Cancel",
+      "deleteTitle": "Delete this conversation?",
+      "deleteBody": "This conversation will be deleted permanently and cannot be recovered.",
+      "confirmDelete": "Delete",
+      "deleting": "Deleting",
+      "failed": "That did not work. Try again."
+    },
+    "topbar": {
+      "export": "Export conversation",
+      "exportFailed": "Could not export the conversation.",
+      "started": "Started {when}"
+    },
+    "empty": {
+      "morning": "Good morning, {name}",
+      "evening": "Good evening, {name}",
+      "body": "Ask about any question of Egyptian law. Every answer comes with the article it rests on, so you can review it yourself.",
+      "startersLabel": "Start with one of these questions",
+      "starters": [
+        {
+          "topic": "Contracts",
+          "q": "What is the difference between judicial and contractual rescission in the Civil Code?"
+        },
+        {
+          "topic": "Civil liability",
+          "q": "What is the limitation period for a tort claim, and when does it start?"
+        },
+        {
+          "topic": "Procedure",
+          "q": "How is the deadline for appealing a civil judgment calculated?"
+        }
+      ],
+      "casesLabel": "What do you want to do?"
+    },
+    "composer": {
+      "label": "Write your legal question",
+      "placeholder": "Write your legal question",
+      "send": "Send",
+      "stop": "Stop generating",
+      "stopShort": "Stop",
+      "scope": "Egyptian legislation",
+      "disclaimer": "Sanadak provides general legal information and does not replace advice from a qualified lawyer. Review the official texts before relying on them.",
+      "defenceMemo": "Draft a defence memo (Word file)",
+      "defenceMemoHelp": "When on, a defence memo is prepared from the conversation and the attached files, and arrives as a Word file in a few minutes. It does not appear as a chat message.",
+      "attachments": {
+        "add": "Attach a file",
+        "remove": "Remove {name}",
+        "uploading": "Uploading",
+        "reading": "Reading",
+        "ready": "Ready",
+        "failed": "Could not be read",
+        "errors": {
+          "generic": "The file could not be attached. Try again.",
+          "too_many_attachments": "These files do not fit in this conversation. Nothing was uploaded.",
+          "attachment_type_not_allowed": "This file type is not supported. Use an image, PDF, Word or text file.",
+          "attachment_empty": "The file is empty.",
+          "attachment_too_large": "The file is larger than the allowed size.",
+          "attachments_pending": "Wait until the files finish reading.",
+          "unauthenticated": "Your session has ended. Sign in again.",
+          "network": "Connection problem. Try again.",
+          "limit_conversation_tokens": "This conversation has reached its length limit. Start a new conversation to continue.",
+          "limit_conversation_messages": "This conversation has reached its question limit. Start a new conversation to continue.",
+          "limit_monthly_tokens": "You have used this month's allowance.",
+          "rate_limited": "Too many attempts. Wait a moment and try again.",
+          "message_empty": "Describe the case or attach a file first.",
+          "invalid_request": "The request could not be sent. Check what you entered and try again.",
+          "server_error": "Something went wrong on our side. Try again shortly.",
+          "not_found": "This conversation does not exist.",
+          "email_not_verified": "Verify your email first, then try again.",
+          "limit_plan_tokens": "You have used your plan's tokens. Buy a top-up or upgrade.",
+          "limit_no_plan": "You have no active plan. Choose a plan to continue.",
+          "limit_pages": "You have used your plan's page reads. Upgrade, or paste the text instead of attaching it."
+        },
+        "limits": "Up to {count} files, {size} MB each. Only the first {pages} pages of a PDF are read.",
+        "pasted": "Pasted text {n}",
+        "uploadingProgress": "Uploading file {done} of {total}"
+      },
+      "sendMemo": "Create the memo",
+      "memoPlaceholder": "Describe the facts of the case and what the memo should cover",
+      "review": "Review a contract",
+      "reviewHelp": "When on, the contract you paste or attach is reviewed clause by clause, with notes and suggested wording. It cannot be combined with the defence memo.",
+      "reviewPlaceholder": "Paste the contract here, or attach its file and write your request",
+      "reviewDefault": "Review this contract clause by clause and suggest the changes it needs.",
+      "templatePlaceholder": "Write the details of the document: names, facts and what is requested",
+      "sendTemplate": "Create the document",
+      "templates": "Document templates",
+      "modeTemplate": "Document: {name}",
+      "clearMode": "Clear the chosen document",
+      "attachDefault": "Analyse the facts in the attached file."
+    },
+    "message": {
+      "assistantName": "Sanadak",
+      "yourMessage": "Your message",
+      "answer": "Sanadak's answer",
+      "answerBusy": "Sanadak's answer, writing",
+      "typing": "Writing",
+      "actions": "Message actions",
+      "copy": "Copy answer",
+      "copyWithReferences": "Copy with references",
+      "copied": "Copied",
+      "sources": "References",
+      "sourcesCount": "{count, plural, one {# source} other {# sources}}",
+      "warning": "Note",
+      "stopped": "The answer was stopped.",
+      "retryHint": "Send your question again to retry."
+    },
+    "citation": {
+      "chip": "Show the text of {article} of {law}",
+      "cardLabel": "Text of {article}",
+      "loading": "Loading the text",
+      "unavailable": "The text of this article could not be loaded.",
+      "retry": "Try again",
+      "inForce": "In force",
+      "amended": "Amended",
+      "repealed": "Repealed",
+      "close": "Close text",
+      "copyText": "Copy text",
+      "copied": "Copied",
+      "lawLine": "{law}",
+      "short": "Art. {article}",
+      "articleTitle": "Article {article}",
+      "lawLineFull": "{law}, No. <n>{number}</n> of <y>{year}</y>"
+    },
+    "errors": {
+      "unauthenticated": "Your session has ended. Sign in again.",
+      "forbidden": "This request cannot be completed for your account.",
+      "conversation_not_found": "This conversation does not exist.",
+      "invalid_request": "Your question could not be sent. Make sure your account is verified and try again.",
+      "message_empty": "Write your question first.",
+      "rate_limited": "Too many attempts. Wait a little and try again.",
+      "network": "Could not connect. Check your internet and try again.",
+      "server_error": "The service had a problem. Try again shortly.",
+      "generation_failed": "The answer stopped before it was complete.",
+      "stream_closed": "The connection dropped before the answer was complete.",
+      "stream_failed": "The connection dropped before the answer was complete.",
+      "attachment_not_uploaded": "Attachments are not available yet.",
+      "unknown": "Something unexpected happened. Try again.",
+      "email_not_verified": "Verify your email address first, then try again.",
+      "account_inactive": "This account is inactive. Contact support.",
+      "account_locked": "The account is locked for now. Try later.",
+      "retry": "Try again",
+      "limit_conversation_tokens": "This conversation has reached its length limit. Start a new conversation to continue.",
+      "limit_conversation_messages": "This conversation has reached its question limit. Start a new conversation to continue.",
+      "limit_monthly_tokens": "You have used this month's allowance.",
+      "limit_plan_tokens": "You have used your plan's tokens. Buy a top-up or upgrade.",
+      "limit_no_plan": "You have no active plan. Choose a plan to continue.",
+      "limit_pages": "You have used your plan's page reads. Upgrade, or paste the text instead of attaching it."
+    },
+    "demo": "Demo mode: the data shown is sample data, not from your account.",
+    "usage": {
+      "label": "Usage",
+      "conversation": "Conversation",
+      "month": "This month",
+      "tokens": "{used} of {limit} tokens",
+      "tokensNoLimit": "{used} tokens",
+      "questions": "{count} of {max} questions",
+      "warningConversation": "This conversation is close to its limit. Start a new one soon.",
+      "warningMonth": "You are close to your monthly allowance. It renews on {date}.",
+      "exhaustedConversationTokens": "This conversation has reached its length limit. Start a new conversation to continue.",
+      "exhaustedConversationMessages": "This conversation has reached its question limit. Start a new conversation to continue.",
+      "exhaustedMonth": "You have used this month's allowance. It renews on {date}.",
+      "newConversation": "New conversation",
+      "answer": "{count} tokens",
+      "details": "Token details",
+      "prompt": "Input",
+      "completion": "Answer, including reasoning",
+      "total": "Total",
+      "plan": "Plan tokens",
+      "exhaustedPlan": "You have used your plan's tokens. Buy a top-up or upgrade to continue.",
+      "exhaustedNoPlan": "You have no active plan. Choose a plan to continue.",
+      "warningPlan": "You are close to the end of your plan's tokens. You can buy a top-up.",
+      "buyMore": "Plans and top-ups"
+    },
+    "drafts": {
+      "title": "Defence memo",
+      "asked": "Your request",
+      "queued": "Waiting",
+      "reading": "Reading the attachments",
+      "generating": "Writing the document",
+      "done": "The document is ready",
+      "failed": "The document could not be written",
+      "wait": "This usually takes 1 to 3 minutes. You can stay on the page or come back later.",
+      "download": "Download the Word file",
+      "downloadFailed": "The file could not be downloaded. Try again.",
+      "show": "Show the text",
+      "hide": "Hide the text",
+      "warning": "Note",
+      "error": "Why it failed",
+      "placeholderHint": "Highlighted items marked \"يُملأ\" are details you add before filing the document.",
+      "statusLabel": "Document status"
+    },
+    "templates": {
+      "contractTitle": "Choose the contract",
+      "paperworkTitle": "Choose the form",
+      "allTitle": "Document templates",
+      "contracts": "Contracts",
+      "paperwork": "Notices, service papers, requests and certificates",
+      "search": "Search the templates",
+      "loading": "Loading the templates",
+      "failed": "The templates could not be loaded.",
+      "retry": "Try again",
+      "empty": "No matching templates.",
+      "wizard": "Sanadak asks for the details one at a time",
+      "close": "Close"
+    }
+  },
+  "features": {
+    "title": "What Sanadak offers",
+    "intro": "Tools that save a lawyer hours of research and preparation, with every result tied to its source text.",
+    "items": [
+      {
+        "title": "Smart search across the laws",
+        "body": "Find the right article in the legislation and the commentaries in seconds."
+      },
+      {
+        "title": "Strengths and weaknesses",
+        "body": "Reads the case papers and shows what strengthens your position and what weakens it."
+      },
+      {
+        "title": "Suggested defences",
+        "body": "Suggests the defences that fit the facts of the case."
+      },
+      {
+        "title": "Anticipated counter-defences",
+        "body": "Foresees what the other side may raise so you can prepare for it."
+      },
+      {
+        "title": "Missing evidence",
+        "body": "Points out the documents and evidence the case file still lacks."
+      },
+      {
+        "title": "Statements of claim and defence memos",
+        "body": "Prepares a draft for you to review and edit before filing."
+      },
+      {
+        "title": "Every result tied to texts and Court of Cassation rulings",
+        "body": "Each result points to the article that supports it and to relevant Court of Cassation rulings."
+      },
+      {
+        "title": "Drafting every kind of contract",
+        "body": "Drafts contracts of all kinds in precise legal language."
+      },
+      {
+        "title": "Contract review and amended clauses",
+        "body": "Reviews a contract and proposes clause changes in your client's interest."
+      }
+    ]
+  },
+  "compare": {
+    "title": "Why Sanadak instead of general-purpose AI?",
+    "intro": "The core differences between a dedicated, precise legal platform and general AI tools such as ChatGPT.",
+    "general": "General-purpose AI",
+    "sanadak": "Sanadak",
+    "rows": [
+      {
+        "topic": "Legal specialisation",
+        "general": "General, shallow information, often drawn from the laws of other countries.",
+        "sanadak": "Specialised in Egyptian law, in all its branches and amendments."
+      },
+      {
+        "topic": "Court rulings",
+        "general": "No accurate database of Court of Cassation and Constitutional Court rulings.",
+        "sanadak": "Grounded in Court of Cassation and Supreme Constitutional Court rulings."
+      },
+      {
+        "topic": "References and accuracy",
+        "general": "May invent legal texts or get articles wrong (hallucination).",
+        "sanadak": "Detailed references to the law and the article, so you can check the text yourself."
+      },
+      {
+        "topic": "Analysis and reasoning",
+        "general": "Gives generic, direct answers only.",
+        "sanadak": "Reads between the lines, finds weak points and builds defence strategy."
+      },
+      {
+        "topic": "Drafting style",
+        "general": "Awkward Arabic or literal translation that lacks legal feel.",
+        "sanadak": "Formal Arabic and precise legal terminology."
+      },
+      {
+        "topic": "Procedures and deadlines",
+        "general": "Misses the fine differences in Egyptian appeal and cassation deadlines.",
+        "sanadak": "A guide to legal deadlines and the papers each procedure requires."
+      },
+      {
+        "topic": "Cost and payment",
+        "general": "Expensive subscriptions in US dollars.",
+        "sanadak": "Competitive prices and payment options in Egyptian pounds."
+      }
+    ]
+  },
+  "profile": {
+    "title": "My account",
+    "back": "Back to conversations",
+    "open": "My account and usage",
+    "account": {
+      "title": "Account details",
+      "name": "Name",
+      "email": "Email",
+      "role": "Account type",
+      "provider": "Sign-in method",
+      "verified": "Email verification",
+      "status": "Account status",
+      "createdAt": "Created",
+      "lastLogin": "Last sign-in",
+      "unknown": "Not available",
+      "yes": "Verified",
+      "no": "Not verified",
+      "active": "Active",
+      "inactive": "Inactive",
+      "roles": {
+        "SUPERUSER": "Super administrator",
+        "ADMIN": "Administrator",
+        "USER": "User"
+      },
+      "providers": {
+        "LOCAL": "Email and password",
+        "GOOGLE": "Google account"
+      }
+    },
+    "usage": {
+      "title": "Usage",
+      "intro": "Usage is counted in tokens and covers questions, answers, reading files and drafting memos. Your allowance renews on the first of each month.",
+      "remaining": "Left this month",
+      "unlimited": "Unlimited",
+      "tokens": "{count} tokens",
+      "used": "Used this month",
+      "limit": "Monthly limit",
+      "noLimit": "No limit",
+      "resets": "Renews on",
+      "period": "Current period",
+      "states": {
+        "ok": "Within the limit",
+        "warning": "Close to the limit",
+        "exhausted": "Allowance used up"
+      },
+      "allTime": "All time since the account began",
+      "prompt": "Input",
+      "completion": "Answer, including reasoning",
+      "total": "Total",
+      "byKind": "This month by kind of request",
+      "kind": "Kind",
+      "calls": "Model calls",
+      "kinds": {
+        "QA": "Questions and answers",
+        "CASE": "Case analysis",
+        "MEMO": "Defence memos",
+        "CHAT": "General chat",
+        "VISION": "Reading images",
+        "DRAFT": "Document drafting",
+        "REVIEW": "Contract review"
+      },
+      "none": "Nothing used this month yet.",
+      "unavailable": "Usage could not be loaded.",
+      "unit": "tokens",
+      "resetsNever": "Does not reset",
+      "remainingPlan": "Left in your current period"
+    },
+    "plan": {
+      "title": "My plan",
+      "none": "No active plan",
+      "renews": "Renews on",
+      "ends": "Ends on",
+      "planTokens": "Plan tokens",
+      "carried": "Top-up tokens carried over",
+      "pages": "Page reads this period",
+      "change": "Change plan",
+      "choose": "Choose a plan",
+      "topup": "Buy top-up tokens",
+      "needPlan": "Subscribe to a plan first to buy top-up tokens.",
+      "managed": "Your allowance is set by the administration and is not tied to a plan.",
+      "off": "Plans are not switched on yet.",
+      "history": "Payment history"
+    }
+  },
+  "useCases": {
+    "title": "What do you want to do?",
+    "question": {
+      "label": "Legal question",
+      "starter": "",
+      "hint": "An answer grounded in the law"
+    },
+    "memo": {
+      "label": "Defence memo",
+      "starter": "I need a defence memo for a case: ",
+      "hint": "Word file"
+    },
+    "draft": {
+      "label": "Draft a contract",
+      "starter": "I want to draft a contract: ",
+      "hint": "Choose the contract"
+    },
+    "review": {
+      "label": "Review a contract",
+      "starter": "I want a contract reviewed and its clauses amended in my client's favour: ",
+      "hint": "Clause by clause"
+    },
+    "notice": {
+      "label": "Notice, service or request",
+      "starter": "I want to prepare a notice to be served by a bailiff: ",
+      "hint": "Choose the form"
+    }
+  },
+  "billing": {
+    "title": "Plans and top-ups",
+    "intro": "Choose the plan that fits your work. Usage is counted in tokens and page reads, and the plan renews monthly from the day you pay.",
+    "current": "Your current plan",
+    "noPlan": "No active plan",
+    "trial": "Trial",
+    "statuses": {
+      "TRIAL": "Trial",
+      "ACTIVE": "Active",
+      "PAST_DUE": "Past due",
+      "CANCELED": "Will not renew",
+      "EXPIRED": "Expired"
+    },
+    "plans": "Plans",
+    "monthly": "a month",
+    "tokens": "{count} tokens",
+    "pages": "{count} page reads",
+    "approxQuestions": "About {count} questions",
+    "approxCases": "About {count} case analyses",
+    "approxMemos": "About {count} defence memos",
+    "estimates": "Counts are estimates and depend on the size of each request.",
+    "actions": {
+      "subscribe": "Subscribe",
+      "upgrade": "Upgrade now",
+      "current": "Your current plan",
+      "later": "Downgrading is not available yet"
+    },
+    "method": "Payment method",
+    "methods": {
+      "card": "Bank card",
+      "wallet": "Mobile wallet"
+    },
+    "packs": {
+      "title": "Top-up tokens",
+      "intro": "Added right after payment, spent after your plan's tokens, and whatever is left carries over to the next period.",
+      "buy": "Buy",
+      "needPlan": "Subscribe to a plan first to buy top-up tokens."
+    },
+    "notices": {
+      "disabled": "Plans and payments are not switched on yet.",
+      "staff": "Your account is not limited by a plan, so there is nothing to pay.",
+      "redirecting": "Taking you to the secure payment page",
+      "secure": "You pay on Paymob's secure page. Your card details never reach Sanadak."
+    },
+    "errors": {
+      "invalid": "The payment could not be started. This method or plan may not be available to your account, or payments are not switched on yet.",
+      "forbidden": "Plans are for member accounts only.",
+      "unauthenticated": "Your session has ended. Sign in again.",
+      "network": "Connection problem. Check your internet and try again.",
+      "server_error": "Something went wrong on our side. Try again shortly.",
+      "rate_limited": "Too many attempts. Wait a moment and try again."
+    },
+    "history": {
+      "title": "Payments",
+      "empty": "No payments yet.",
+      "date": "Date",
+      "item": "Item",
+      "amount": "Amount",
+      "status": "Status",
+      "free": "No charge",
+      "statuses": {
+        "PENDING": "Pending",
+        "PAID": "Paid",
+        "FAILED": "Not completed",
+        "REFUNDED": "Refunded"
+      },
+      "purposes": {
+        "PLAN": "Subscription",
+        "UPGRADE": "Upgrade",
+        "TOPUP": "Top-up",
+        "RENEWAL": "Renewal",
+        "GRANT": "Grant"
+      }
+    },
+    "return": {
+      "checking": "Checking the payment",
+      "waiting": "Still waiting for the payment to be confirmed. Your balance will show in your account within minutes.",
+      "paid": "Payment received",
+      "paidPlan": "Your plan is now active.",
+      "paidPack": "The top-up tokens were added to your account.",
+      "failed": "The payment was not completed",
+      "refunded": "This amount was refunded to you.",
+      "retry": "Try again",
+      "toProfile": "My account and usage",
+      "toChat": "Back to conversations",
+      "missing": "There is no payment to show.",
+      "unreadable": "The payment status could not be read. Open your account to check your balance."
+    }
+  },
+  "pricing": {
+    "title": "Plans",
+    "intro": "Start with the plan that fits the size of your work, and move up when you need more.",
+    "cta": "Get started",
+    "topup": "Add tokens any time",
+    "topupBody": "{tokens} tokens for {price}"
+  },
+  "mobile": {
+    "close": "Close",
+    "cancel": "Cancel",
+    "retry": "Try again",
+    "loading": "Loading",
+    "menu": "Menu",
+    "back": "Back",
+    "done": "Done",
+    "share": "Share",
+    "language": "Language",
+    "languageName": "English",
+    "otherLanguageName": "العربية",
+    "theme": "Appearance",
+    "themeSystem": "Device",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "settings": "Settings",
+    "restartNote": "The app will restart to apply the screen direction.",
+    "sessionExpired": "Your session has ended. Sign in again.",
+    "unavailable": "Could not reach the service. Check your internet and try again.",
+    "attach": {
+      "title": "Attach",
+      "files": "File or PDF",
+      "photos": "Photos from the library",
+      "camera": "Take a photo",
+      "permission": "Allow access in the device settings to attach photos.",
+      "openSettings": "Open settings"
+    },
+    "mode": {
+      "title": "Kind of request",
+      "ask": "Question",
+      "memo": "Defence memo",
+      "review": "Contract review",
+      "template": "Document"
+    },
+    "article": {
+      "copy": "Copy the text",
+      "copied": "Copied"
+    },
+    "draft": {
+      "saved": "The file was saved.",
+      "shareTitle": "Share the document"
+    },
+    "billing": {
+      "browserHint": "After you pay, come back to the app and we will check your payment.",
+      "checkPayment": "Check the payment",
+      "opening": "Opening the payment page"
+    },
+    "legalSoon": "The full text of this page is being prepared and will be published here.",
+    "landing": {
+      "menuAccount": "Account",
+      "goToChat": "Go to conversations"
+    },
+    "sidebar": {
+      "title": "Sanadak",
+      "profile": "My account and usage",
+      "plans": "Plans and top-ups"
+    }
+  }
+}
