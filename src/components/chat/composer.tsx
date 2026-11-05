@@ -212,8 +212,7 @@ export function Composer({
 
   const pickPhotos = async () => {
     setMenu(false);
-    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!permission.granted) return setDenied(true);
+    // The system photo picker shows only what the person chooses, so it needs no permission.
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
       allowsMultipleSelection: true,

@@ -1,5 +1,5 @@
 import { useFocusEffect, useRouter } from 'expo-router';
-import { ArrowLeft, ArrowRight, SignOut } from 'phosphor-react-native';
+import { ArrowLeft, ArrowRight, SignOut, Trash } from 'phosphor-react-native';
 import { useCallback, useState, type ReactNode } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 import type { ProfileDto } from '@/application/dto/dto';
@@ -10,6 +10,7 @@ import { Card } from '@/components/ui/card';
 import { IconButton } from '@/components/ui/icon-button';
 import { Meter } from '@/components/ui/meter';
 import { Screen } from '@/components/ui/screen';
+import { Sheet } from '@/components/ui/sheet';
 import { AppText } from '@/components/ui/text';
 import { canBuyPack, type SubscriptionInfo } from '@/domain/entities/billing';
 import type { TokenCount } from '@/domain/entities/usage';
@@ -239,6 +240,11 @@ export default function Profile() {
   const router = useRouter();
   const { colors, locale, rtl } = useTheme();
   const signOut = useAuth((s) => s.signOut);
+  const deleteAccount = useAuth((s) => s.deleteAccount);
+  const danger = useT('mobile.account');
+  const [confirming, setConfirming] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteFailed, setDeleteFailed] = useState(false);
   const [profile, setProfile] = useState<ProfileDto | null>(null);
   const [info, setInfo] = useState<SubscriptionInfo | null>(null);
   const [failed, setFailed] = useState(false);
@@ -349,9 +355,57 @@ export default function Profile() {
               onPress={() => void signOut()}
               block
             />
+
+            <Section title={danger('section')} intro={danger('intro')}>
+              <Button
+                variant="danger"
+                label={danger('delete')}
+                icon={<Trash size={18} color={colors.error} />}
+                onPress={() => {
+                  setDeleteFailed(false);
+                  setConfirming(true);
+                }}
+                block
+              />
+            </Section>
           </>
         )}
       </ScrollView>
+
+      <Sheet
+        open={confirming}
+        onClose={() => (deleting ? undefined : setConfirming(false))}
+        title={danger('title')}
+        placement="center"
+      >
+        <AppText variant="small" tone="muted">
+          {danger('body')}
+        </AppText>
+        {deleteFailed ? <Banner tone="error">{danger('failed')}</Banner> : null}
+        <View style={styles.confirmActions}>
+          <Button
+            variant="ghost"
+            label={mobile('cancel')}
+            disabled={deleting}
+            onPress={() => setConfirming(false)}
+          />
+          <Button
+            variant="danger"
+            label={deleting ? danger('deleting') : danger('confirm')}
+            loading={deleting}
+            onPress={async () => {
+              setDeleting(true);
+              setDeleteFailed(false);
+              const ok = await deleteAccount();
+              // On success the session ends and the app returns to the welcome page by itself.
+              if (!ok) {
+                setDeleting(false);
+                setDeleteFailed(true);
+              }
+            }}
+          />
+        </View>
+      </Sheet>
     </Screen>
   );
 }
@@ -366,6 +420,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   grow: { flex: 1 },
+  confirmActions: { flexDirection: 'row', justifyContent: 'flex-end', gap: 8, marginTop: 8 },
   content: { padding: 16, gap: 16, paddingBottom: 48 },
   identity: { flexDirection: 'row', alignItems: 'center', gap: 16 },
   avatar: { width: 56, height: 56, borderRadius: 28, alignItems: 'center', justifyContent: 'center' },

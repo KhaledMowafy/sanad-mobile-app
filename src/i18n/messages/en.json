@@ -838,9 +838,10 @@
       "shareTitle": "Share the document"
     },
     "billing": {
-      "browserHint": "After you pay, come back to the app and we will check your payment.",
-      "checkPayment": "Check the payment",
-      "opening": "Opening the payment page"
+      "subscribe": "Subscribe on the website",
+      "topup": "Buy tokens on the website",
+      "hint": "Subscriptions and top-ups are handled on our website. Sign in there to pay. Your plan updates here once the payment is confirmed.",
+      "refresh": "Refresh my plan"
     },
     "legalSoon": "The full text of this page is being prepared and will be published here.",
     "landing": {
@@ -851,6 +852,16 @@
       "title": "Sanadak",
       "profile": "My account and usage",
       "plans": "Plans and top-ups"
+    },
+    "account": {
+      "delete": "Delete my account",
+      "title": "Delete your account?",
+      "body": "Your account, conversations, files and documents will be deleted permanently and cannot be recovered. Any remaining plan or tokens are lost.",
+      "confirm": "Delete permanently",
+      "deleting": "Deleting",
+      "failed": "The account could not be deleted. Try again.",
+      "section": "Delete account",
+      "intro": "Permanently delete your account and everything in it."
     }
   }
 }

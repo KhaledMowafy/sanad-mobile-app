@@ -1,8 +1,7 @@
 import { useFocusEffect, useRouter } from 'expo-router';
-import * as WebBrowser from 'expo-web-browser';
 import { ArrowLeft, ArrowRight } from 'phosphor-react-native';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, AppState, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { useCallback, useState } from 'react';
+import { ActivityIndicator, Linking, ScrollView, StyleSheet, View } from 'react-native';
 import { PlanCard } from '@/components/billing/plan-card';
 import { Banner } from '@/components/ui/banner';
 import { Button } from '@/components/ui/button';
@@ -14,15 +13,14 @@ import {
   canBuyPack,
   planAction,
   type Catalogue,
-  type PayMethod,
   type Payment,
   type SubscriptionInfo,
 } from '@/domain/entities/billing';
 import { useT } from '@/i18n/use-t';
+import { SITE_URL } from '@/infrastructure/config';
 import { getContainer } from '@/infrastructure/di/container';
 import { formatDate, formatEgp, formatNumber } from '@/presentation/lib/format';
 import { useTheme } from '@/theme/theme';
-import { radius, size } from '@/theme/tokens';
 
 interface Data {
   catalogue: Catalogue | null;
@@ -32,7 +30,10 @@ interface Data {
 
 const TONE = { PAID: 'success', PENDING: 'muted', FAILED: 'error', REFUNDED: 'warning' } as const;
 
-/** Plans, top-ups and payment history, with the current plan at the top. */
+/**
+ * Plans, top-ups and payment history. Paying happens on the website, where the person signs in:
+ * every buy button opens it in the browser, and this screen reloads when the app is shown again.
+ */
 export default function Billing() {
   const t = useT('billing');
   const history = useT('billing.history');
@@ -41,11 +42,6 @@ export default function Billing() {
   const { colors, locale, rtl } = useTheme();
   const [data, setData] = useState<Data | null>(null);
   const [failed, setFailed] = useState(false);
-  const [method, setMethod] = useState<PayMethod>('card');
-  const [busy, setBusy] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [pending, setPending] = useState<string | null>(null);
-  const pendingRef = useRef<string | null>(null);
 
   const load = useCallback(async () => {
     const { useCases } = getContainer();
@@ -63,47 +59,17 @@ export default function Billing() {
     });
   }, []);
 
-  // Reload when coming back from the payment page or the return screen.
+  // Reload on every return to this screen, such as coming back from the browser after paying.
   useFocusEffect(
     useCallback(() => {
       void load();
     }, [load]),
   );
 
-  // Coming back to the app after paying in the browser: go and read what the backend says.
-  useEffect(() => {
-    const subscription = AppState.addEventListener('change', (state) => {
-      if (state === 'active' && pendingRef.current) {
-        const id = pendingRef.current;
-        pendingRef.current = null;
-        setPending(null);
-        router.push({ pathname: '/billing/return', params: { payment: id } });
-      }
-    });
-    return () => subscription.remove();
-  }, [router]);
-
-  const pay = async (key: string, input: { planCode?: string; packCode?: string }) => {
-    setBusy(key);
-    setError(null);
-    const result = await getContainer().useCases.startCheckout.execute({ ...input, method });
-    if (!result.ok) {
-      setBusy(null);
-      const kind = result.error.kind;
-      setError(kind === 'network' ? 'network' : kind === 'unauthenticated' ? 'unauthenticated' : 'invalid');
-      return;
-    }
-    pendingRef.current = result.value.paymentId;
-    setPending(result.value.paymentId);
-    setBusy(null);
-    await WebBrowser.openBrowserAsync(result.value.checkoutUrl);
-    // On iOS the promise settles when the sheet is closed; the app-state listener covers the rest.
-    if (pendingRef.current) {
-      const id = pendingRef.current;
-      pendingRef.current = null;
-      setPending(null);
-      router.push({ pathname: '/billing/return', params: { payment: id } });
-    }
+  /** Arabic lives at the root of the site and English under /en. */
+  const openWebsite = () => {
+    const path = locale === 'en' ? '/en/billing' : '/billing';
+    void Linking.openURL(`${SITE_URL}${path}`).catch(() => undefined);
   };
 
   const info = data?.info ?? null;
@@ -113,8 +79,6 @@ export default function Billing() {
   const billingOn = info?.billingEnabled ?? true;
   // Staff, and accounts with a fixed quota, are not limited by a plan and have nothing to buy.
   const canBuy = billingOn && (info?.billed ?? true);
-
-  const errorText = error ? (t.has(`errors.${error}`) ? t(`errors.${error}`) : t('errors.invalid')) : null;
   const Back = rtl ? ArrowRight : ArrowLeft;
 
   const paymentName = (payment: Payment): string => {
@@ -131,7 +95,10 @@ export default function Billing() {
   return (
     <Screen edges={['top']}>
       <View style={[styles.header, { borderBottomColor: colors.border }]}>
-        <IconButton label={mobile('back')} onPress={() => (router.canGoBack() ? router.back() : router.replace('/chat/new'))}>
+        <IconButton
+          label={mobile('back')}
+          onPress={() => (router.canGoBack() ? router.back() : router.replace('/chat/new'))}
+        >
           <Back size={22} color={colors.textMuted} />
         </IconButton>
         <AppText variant="h4" style={styles.grow} accessibilityRole="header">
@@ -139,7 +106,7 @@ export default function Billing() {
         </AppText>
       </View>
 
-      <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+      <ScrollView contentContainerStyle={styles.content}>
         <AppText variant="lead" tone="muted">
           {t('intro')}
         </AppText>
@@ -158,96 +125,48 @@ export default function Billing() {
             ) : !canBuy ? (
               <Banner tone="info">{t('notices.staff')}</Banner>
             ) : (
-              <Card>
-                <AppText variant="small" tone="muted">
-                  {t('current')}
-                </AppText>
-                <AppText variant="h4">{planName ?? t('noPlan')}</AppText>
-                <View style={styles.wrapRow}>
-                  {subscription ? (
-                    <AppText variant="caption" weight={600} tone="primary">
-                      {t(`statuses.${subscription.status}`)}
-                    </AppText>
-                  ) : null}
-                  {end ? (
-                    <AppText variant="small" tone="muted">
-                      {formatDate(end, locale)}
-                    </AppText>
-                  ) : null}
-                </View>
-              </Card>
-            )}
+              <>
+                <Card>
+                  <AppText variant="small" tone="muted">
+                    {t('current')}
+                  </AppText>
+                  <AppText variant="h4">{planName ?? t('noPlan')}</AppText>
+                  <View style={styles.wrapRow}>
+                    {subscription ? (
+                      <AppText variant="caption" weight={600} tone="primary">
+                        {t(`statuses.${subscription.status}`)}
+                      </AppText>
+                    ) : null}
+                    {end ? (
+                      <AppText variant="small" tone="muted">
+                        {formatDate(end, locale)}
+                      </AppText>
+                    ) : null}
+                  </View>
+                </Card>
 
-            {errorText ? <Banner tone="error">{errorText}</Banner> : null}
-
-            {pending ? (
-              <Banner
-                tone="info"
-                action={
+                <Banner tone="info">{mobile('billing.hint')}</Banner>
+                <View style={styles.stack}>
+                  <Button label={mobile('billing.subscribe')} onPress={openWebsite} block />
                   <Button
                     variant="secondary"
-                    label={mobile('billing.checkPayment')}
-                    onPress={() => {
-                      pendingRef.current = null;
-                      setPending(null);
-                      router.push({ pathname: '/billing/return', params: { payment: pending } });
-                    }}
+                    label={mobile('billing.refresh')}
+                    onPress={() => void load()}
+                    block
                   />
-                }
-              >
-                {mobile('billing.browserHint')}
-              </Banner>
-            ) : null}
-
-            {canBuy ? (
-              <View style={styles.stack} accessibilityRole="radiogroup">
-                <AppText variant="small" weight={600} tone="muted">
-                  {t('method')}
-                </AppText>
-                <View style={styles.wrapRow}>
-                  {(['card', 'wallet'] as const).map((value) => (
-                    <Pressable
-                      key={value}
-                      accessibilityRole="radio"
-                      accessibilityState={{ checked: method === value }}
-                      accessibilityLabel={t(`methods.${value}`)}
-                      onPress={() => setMethod(value)}
-                      style={[
-                        styles.method,
-                        {
-                          borderColor: method === value ? colors.primary : colors.borderStrong,
-                          backgroundColor: method === value ? colors.primarySoft : 'transparent',
-                        },
-                      ]}
-                    >
-                      <AppText variant="small" weight={500}>
-                        {t(`methods.${value}`)}
-                      </AppText>
-                    </Pressable>
-                  ))}
                 </View>
-              </View>
-            ) : null}
+              </>
+            )}
 
             <View style={styles.stack}>
               <AppText variant="h3">{t('plans')}</AppText>
-              {data.catalogue?.plans.map((plan) => {
-                const action = planAction(plan, subscription);
-                const inactive = !canBuy || action === 'current' || action === 'later' || busy !== null;
-                const primary = action === 'subscribe' || action === 'upgrade';
-                return (
-                  <PlanCard key={plan.code} plan={plan} highlighted={action === 'current'}>
-                    <Button
-                      variant={primary ? 'primary' : 'secondary'}
-                      block
-                      disabled={inactive}
-                      loading={busy === `plan:${plan.code}`}
-                      label={busy === `plan:${plan.code}` ? t('notices.redirecting') : t(`actions.${action}`)}
-                      onPress={() => void pay(`plan:${plan.code}`, { planCode: plan.code })}
-                    />
-                  </PlanCard>
-                );
-              })}
+              {data.catalogue?.plans.map((plan) => (
+                <PlanCard
+                  key={plan.code}
+                  plan={plan}
+                  highlighted={planAction(plan, subscription) === 'current'}
+                />
+              ))}
               <AppText variant="small" tone="muted">
                 {t('estimates')}
               </AppText>
@@ -263,27 +182,23 @@ export default function Billing() {
                     <AppText variant="h3" style={styles.number}>
                       {formatEgp(pack.pricePiastres, locale)}
                     </AppText>
-                    <Button
-                      block
-                      disabled={!canBuy || !canBuyPack(subscription) || busy !== null}
-                      loading={busy === `pack:${pack.code}`}
-                      label={busy === `pack:${pack.code}` ? t('notices.redirecting') : t('packs.buy')}
-                      onPress={() => void pay(`pack:${pack.code}`, { packCode: pack.code })}
-                    />
                   </Card>
                 ))}
-                {canBuy && !canBuyPack(subscription) ? (
-                  <AppText variant="small" tone="muted">
-                    {t('packs.needPlan')}
-                  </AppText>
+                {canBuy ? (
+                  canBuyPack(subscription) ? (
+                    <Button
+                      variant="secondary"
+                      label={mobile('billing.topup')}
+                      onPress={openWebsite}
+                      block
+                    />
+                  ) : (
+                    <AppText variant="small" tone="muted">
+                      {t('packs.needPlan')}
+                    </AppText>
+                  )
                 ) : null}
               </View>
-            ) : null}
-
-            {canBuy ? (
-              <AppText variant="small" tone="muted">
-                {t('notices.secure')}
-              </AppText>
             ) : null}
 
             <View style={styles.stack}>
@@ -339,13 +254,6 @@ const styles = StyleSheet.create({
   content: { padding: 16, gap: 20, paddingBottom: 48 },
   stack: { gap: 12 },
   wrapRow: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 8 },
-  method: {
-    borderWidth: 1,
-    borderRadius: radius.md,
-    paddingHorizontal: 16,
-    minHeight: size.control,
-    justifyContent: 'center',
-  },
   number: { fontVariant: ['tabular-nums'] },
   payment: {
     flexDirection: 'row',

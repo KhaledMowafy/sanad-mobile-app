@@ -125,6 +125,20 @@ describe('HttpAuthService', () => {
     expect(await auth.signOut()).toEqual({ ok: true, value: undefined });
     expect(session.session).toBeNull();
   });
+
+  it('deletes the account and clears the session only when the API agrees', async () => {
+    const kept = new MemorySession({ accessToken: 'a', refreshToken: 'r' });
+    const refused = fakeFetch([json(500, { status_code: 500, data: null })]);
+    const failing = new HttpAuthService(client(refused.fetch, kept), kept);
+    expect((await failing.deleteAccount()).ok).toBe(false);
+    expect(kept.session).not.toBeNull();
+
+    const gone = new MemorySession({ accessToken: 'a', refreshToken: 'r' });
+    const accepted = fakeFetch([json(200, envelope(null))]);
+    const auth = new HttpAuthService(client(accepted.fetch, gone), gone);
+    expect(await auth.deleteAccount()).toEqual({ ok: true, value: undefined });
+    expect(gone.session).toBeNull();
+  });
 });
 
 describe('HttpConversationRepository', () => {

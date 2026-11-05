@@ -13,6 +13,7 @@ import {
   ResetPassword,
   SignIn,
   SignOut,
+  DeleteAccount,
   SignUp,
   VerifyEmail,
 } from '@/application/use-cases/auth';
@@ -104,6 +105,7 @@ function build() {
       requestPasswordReset: new RequestPasswordReset(auth),
       resetPassword: new ResetPassword(auth),
       signOut: new SignOut(auth),
+      deleteAccount: new DeleteAccount(auth),
       getCurrentUser: new GetCurrentUser(auth),
       listConversations: new ListConversations(conversations, clock),
       searchConversations: new SearchConversations(conversations, clock),

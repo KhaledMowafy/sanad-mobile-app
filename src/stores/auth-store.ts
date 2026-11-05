@@ -11,6 +11,8 @@ interface AuthState {
   bootstrap: () => Promise<void>;
   setUser: (user: UserDto) => void;
   signOut: () => Promise<void>;
+  /** Deletes the account for good. True when it is gone and the session is cleared. */
+  deleteAccount: () => Promise<boolean>;
 }
 
 export const useAuth = create<AuthState>((set) => {
@@ -32,6 +34,12 @@ export const useAuth = create<AuthState>((set) => {
     },
 
     setUser: (user) => set({ status: 'signedIn', user }),
+
+    deleteAccount: async () => {
+      const result = await getContainer().useCases.deleteAccount.execute();
+      if (result.ok) set({ status: 'signedOut', user: null });
+      return result.ok;
+    },
 
     signOut: async () => {
       await getContainer().useCases.signOut.execute();

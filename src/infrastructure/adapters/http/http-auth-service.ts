@@ -201,6 +201,17 @@ export class HttpAuthService implements AuthService {
     return ok(undefined);
   }
 
+  async deleteAccount(): Promise<Result<void, AppError>> {
+    const result = await this.client.request({
+      method: 'DELETE',
+      path: '/users/me',
+      schema: anySchema,
+    });
+    if (!result.ok) return result;
+    await this.session.clear();
+    return ok(undefined);
+  }
+
   async currentUser(): Promise<Result<User | null, AppError>> {
     if (!(await this.session.read())) return ok(null);
     const me = await this.fetchMe();

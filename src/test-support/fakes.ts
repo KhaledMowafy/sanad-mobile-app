@@ -128,6 +128,7 @@ export class FakeAuthService implements AuthService {
   verifyCalls: { email: string; code: string }[] = [];
   resendCalls: string[] = [];
   signedOut = 0;
+  deleted = 0;
   signUpResult: Result<void, AppError> = ok(undefined);
   verifyResult: Result<void, AppError> = ok(undefined);
 
@@ -172,6 +173,11 @@ export class FakeAuthService implements AuthService {
 
   signOut(): Promise<Result<void, AppError>> {
     this.signedOut += 1;
+    return Promise.resolve(ok(undefined));
+  }
+
+  deleteAccount(): Promise<Result<void, AppError>> {
+    this.deleted += 1;
     return Promise.resolve(ok(undefined));
   }
 

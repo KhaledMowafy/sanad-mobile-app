@@ -143,6 +143,14 @@ export class SignOut {
   }
 }
 
+export class DeleteAccount {
+  constructor(private readonly auth: AuthService) {}
+
+  execute(): Promise<Result<void, AppError>> {
+    return this.auth.deleteAccount();
+  }
+}
+
 export class GetCurrentUser {
   constructor(private readonly auth: AuthService) {}
 

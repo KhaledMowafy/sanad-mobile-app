@@ -27,6 +27,8 @@ export interface AuthService {
   /** Verifies the emailed code, then sets the new password. */
   resetPassword(email: Email, code: string, password: Password): Promise<Result<void, AppError>>;
   signOut(): Promise<Result<void, AppError>>;
+  /** Deletes the signed-in account for good, then ends the local session. */
+  deleteAccount(): Promise<Result<void, AppError>>;
   /** Null when there is no valid session. Not an error. */
   currentUser(): Promise<Result<User | null, AppError>>;
 }
