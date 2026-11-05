@@ -32,7 +32,6 @@ function anySignal(signals: readonly AbortSignal[]): AbortSignal {
 }
 
 export interface ApiClientOptions {
-  /** e.g. http://41.187.93.60:34000/api, no trailing slash */
   readonly baseUrl: string;
   readonly timeoutMs: number;
   /**

@@ -3,7 +3,7 @@
  * the default is the same backend the website uses.
  */
 export const API_URL = (
-  process.env.EXPO_PUBLIC_API_URL ?? 'http://41.187.93.60:34000/api'
+  process.env.EXPO_PUBLIC_API_URL ?? 'https://api.sanadtechnology.com/api/'
 ).replace(/\/+$/, '');
 
 /** Ordinary requests give up after this; an answer stream waits much longer for its first byte. */

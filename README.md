@@ -19,7 +19,7 @@ npx expo run:android      # or: npx expo run:ios (macOS), for a development buil
 
 Environment (optional, defaults point at the production servers):
 
-- `EXPO_PUBLIC_API_URL` backend API base, default `http://41.187.93.60:34000/api`
+- `EXPO_PUBLIC_API_URL` backend API base, default `https://api.sanadtechnology.com/api/`
 - `EXPO_PUBLIC_SITE_URL` site origin, default `https://sanadtechnology.com/`
 
 ## Checks
@@ -33,7 +33,7 @@ npx expo export --platform android --platform ios   # bundle check
 
 ## Notes
 
-- The backend is plain HTTP, so Android cleartext traffic and an iOS ATS exception for `41.187.93.60` are enabled in `app.json`. Put the API behind HTTPS and remove both before a store release.
+- The API is served over HTTPS, so no cleartext or ATS exceptions are needed.
 - Changing the language reloads the app, because React Native fixes the text direction at start.
 - `assets/icon.png`, `splash-icon.png` and the Android adaptive icon are still the Expo placeholders. Replace them with 1024 px brand art.
 - Store builds: `npx eas build -p android` / `-p ios` after `eas build:configure`.
