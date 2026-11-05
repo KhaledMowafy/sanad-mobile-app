@@ -20,7 +20,7 @@ npx expo run:android      # or: npx expo run:ios (macOS), for a development buil
 Environment (optional, defaults point at the production servers):
 
 - `EXPO_PUBLIC_API_URL` backend API base, default `http://41.187.93.60:34000/api`
-- `EXPO_PUBLIC_SITE_URL` site origin, default `http://41.187.93.60:34777`
+- `EXPO_PUBLIC_SITE_URL` site origin, default `https://sanadtechnology.com/`
 
 ## Checks
 

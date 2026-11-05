@@ -11,7 +11,7 @@ export const REQUEST_TIMEOUT_MS = Number(process.env.EXPO_PUBLIC_REQUEST_TIMEOUT
 export const STREAM_TIMEOUT_MS = Number(process.env.EXPO_PUBLIC_STREAM_TIMEOUT_MS ?? 180_000);
 
 /** The website, for legal pages and anything the app hands back to the browser. */
-export const SITE_URL = (process.env.EXPO_PUBLIC_SITE_URL ?? 'http://41.187.93.60:34777').replace(
+export const SITE_URL = (process.env.EXPO_PUBLIC_SITE_URL ?? 'https://sanadtechnology.com/').replace(
   /\/+$/,
   '',
 );
