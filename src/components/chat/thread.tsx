@@ -52,6 +52,10 @@ export function Thread({ messages, drafts = [] }: { messages: MessageDto[]; draf
         atBottom.current = contentOffset.y + layoutMeasurement.height >= contentSize.height - 160;
       }}
       scrollEventThrottle={64}
+      onLayout={() => {
+        // The keyboard opening or closing resizes the list: keep the latest text in view.
+        if (atBottom.current) list.current?.scrollToEnd({ animated: false });
+      }}
       onContentSizeChange={() => {
         if (atBottom.current) list.current?.scrollToEnd({ animated: false });
       }}

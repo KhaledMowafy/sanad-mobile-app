@@ -121,7 +121,6 @@ export function Composer({
   onAttach,
   onDetach,
   onNewConversation,
-  compact = false,
 }: {
   onSend: (text: string, options: { mode: ComposerMode }) => void;
   onStop: () => void;
@@ -139,8 +138,6 @@ export function Composer({
   onAttach?: (files: PickedFile[]) => void;
   onDetach?: (id: string) => void;
   onNewConversation: () => void;
-  /** A conversation is open, so the screen is short on room: drop the file limits line. */
-  compact?: boolean;
 }) {
   const t = useT('chat.composer');
   const mobile = useT('mobile');
@@ -244,12 +241,6 @@ export function Composer({
         ? t(`attachments.errors.${attachmentError}`)
         : t('attachments.errors.generic')
       : null;
-
-  const limitsText = t('attachments.limits', {
-    count: limits.attachments.perConversation,
-    size: Math.round(limits.attachments.maxBytes / (1024 * 1024)),
-    pages: limits.attachments.pagesRead,
-  });
 
   const menuItems = [
     { key: 'files', label: mobile('attach.files'), Icon: Files, run: pickDocuments },
@@ -411,18 +402,11 @@ export function Composer({
         </Pressable>
       ) : null}
 
-      <View style={styles.notes}>
-        {onAttach && !compact ? (
-          <AppText variant="caption" tone="subtle" align="center">
-            {limitsText}
-          </AppText>
-        ) : null}
-        <View style={styles.disclaimer}>
-          <Info size={14} color={colors.textSubtle} />
-          <AppText variant="caption" tone="subtle" style={styles.grow}>
-            {t('disclaimer')}
-          </AppText>
-        </View>
+      <View style={styles.disclaimer}>
+        <Info size={13} color={colors.textSubtle} />
+        <AppText variant="caption" tone="subtle" numberOfLines={1} style={styles.grow}>
+          {mobile('disclaimer')}
+        </AppText>
       </View>
 
       <Sheet open={menu} onClose={() => setMenu(false)} title={mobile('attach.title')}>
@@ -491,8 +475,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  notes: { gap: 4 },
-  disclaimer: { flexDirection: 'row', alignItems: 'flex-start', gap: 6 },
+  disclaimer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6 },
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',

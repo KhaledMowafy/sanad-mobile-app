@@ -1,6 +1,6 @@
 import { List, Plus } from 'phosphor-react-native';
 import { useEffect, useMemo, useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useStore } from 'zustand';
 import type { MessageDto, TemplateDto, UsageSnapshotDto } from '@/application/dto/dto';
@@ -125,15 +125,29 @@ export function ChatView({
         onAttach={(files) => void store.getState().attach(files)}
         onDetach={(fileId) => store.getState().detach(fileId)}
         onNewConversation={onNewChat}
-        compact={messages.length > 0 || drafts.length > 0}
       />
     ),
     // `send` only closes over the store and the mode setter, both stable.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [streaming, attachments, uploading, uploadProgress, attachmentError, draftError, currentUsage, draftBusy, mode, messages.length, drafts.length],
+    [streaming, attachments, uploading, uploadProgress, attachmentError, draftError, currentUsage, draftBusy, mode],
   );
 
   const empty = messages.length === 0 && drafts.length === 0;
+
+  // While the keyboard is up it covers the bottom inset, so the composer sits right on top of it.
+  const [keyboard, setKeyboard] = useState(false);
+  useEffect(() => {
+    const show = Keyboard.addListener(Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow', () =>
+      setKeyboard(true),
+    );
+    const hide = Keyboard.addListener(Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide', () =>
+      setKeyboard(false),
+    );
+    return () => {
+      show.remove();
+      hide.remove();
+    };
+  }, []);
 
   return (
     <View style={[styles.fill, { backgroundColor: colors.bg, paddingTop: insets.top }]}>
@@ -149,7 +163,8 @@ export function ChatView({
         </IconButton>
       </View>
 
-      <KeyboardAvoidingView style={styles.fill} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      {/* Android draws edge to edge and no longer resizes the window for the keyboard, so pad on both. */}
+      <KeyboardAvoidingView style={styles.fill} behavior="padding">
         {empty ? (
           <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.scroll}>
             <EmptyState
@@ -164,7 +179,7 @@ export function ChatView({
         ) : (
           <>
             <Thread messages={messages} drafts={drafts} />
-            <View style={[styles.dock, { paddingBottom: Math.max(insets.bottom, 12) }]}>{composer}</View>
+            <View style={[styles.dock, { paddingBottom: keyboard ? 8 : Math.max(insets.bottom, 12) }]}>{composer}</View>
           </>
         )}
       </KeyboardAvoidingView>

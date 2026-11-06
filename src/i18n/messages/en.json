@@ -862,6 +862,7 @@
       "failed": "The account could not be deleted. Try again.",
       "section": "Delete account",
       "intro": "Permanently delete your account and everything in it."
-    }
+    },
+    "disclaimer": "Sanadak does not replace a qualified lawyer."
   }
 }

@@ -59,6 +59,27 @@ export function UsageStrip({
 
   if (!hasConversationBar && !hasMonthBar && !message) return null;
 
+  // One bar: what the account has used of its plan or month. Without an account limit, the
+  // conversation's own limit stands in for it.
+  const bar =
+    user && user.limit !== null
+      ? {
+          used: user.used,
+          limit: user.limit,
+          state: user.state,
+          label: billing ? t('plan') : t('month'),
+          text: t('tokens', { used: formatNumber(user.used), limit: formatNumber(user.limit) }),
+        }
+      : conversation && conversation.limit !== null
+        ? {
+            used: conversation.used,
+            limit: conversation.limit,
+            state: conversation.tokensState,
+            label: t('conversation'),
+            text: t('tokens', { used: formatNumber(conversation.used), limit: formatNumber(conversation.limit) }),
+          }
+        : null;
+
   const showBuy =
     billing && (blocked === 'plan_tokens' || blocked === 'no_plan' || user?.state === 'warning');
   const showNew = blocked === 'conversation_tokens' || blocked === 'conversation_messages';
@@ -66,32 +87,23 @@ export function UsageStrip({
 
   return (
     <View accessibilityLabel={t('label')} style={styles.wrap}>
-      {hasConversationBar || hasMonthBar ? (
-        <View style={styles.meters}>
-          {conversation && conversation.limit !== null ? (
-            <Meter
-              label={t('conversation')}
-              text={t('tokens', {
-                used: formatNumber(conversation.used),
-                limit: formatNumber(conversation.limit),
-              })}
-              used={conversation.used}
-              limit={conversation.limit}
-              state={conversation.tokensState}
-            />
-          ) : null}
-          {user && user.limit !== null ? (
-            <Meter
-              label={billing ? t('plan') : t('month')}
-              text={t('tokens', {
-                used: formatNumber(user.used),
-                limit: formatNumber(user.limit),
-              })}
-              used={user.used}
-              limit={user.limit}
-              state={user.state}
-            />
-          ) : null}
+      {bar ? (
+        <View
+          accessibilityRole="progressbar"
+          accessibilityLabel={bar.label}
+          accessibilityValue={{ min: 0, max: bar.limit, now: Math.min(bar.used, bar.limit), text: bar.text }}
+          style={[styles.track, { backgroundColor: colors.surfaceSunken }]}
+        >
+          <View
+            style={[
+              styles.fill,
+              {
+                width: `${Math.min(100, Math.round((bar.used / bar.limit) * 100))}%`,
+                backgroundColor:
+                  bar.state === 'exhausted' ? colors.error : bar.state === 'warning' ? colors.warning : colors.primary,
+              },
+            ]}
+          />
         </View>
       ) : null}
 
@@ -146,9 +158,9 @@ export function MonthUsage({ usage }: { usage: UserPeriodUsage | null }) {
 }
 
 const styles = StyleSheet.create({
-  wrap: { gap: 8 },
-  // One under the other: two side by side do not fit a phone once the numbers are long.
-  meters: { gap: 10 },
+  wrap: { gap: 6 },
+  track: { height: 4, borderRadius: 999, overflow: 'hidden' },
+  fill: { height: '100%', borderRadius: 999 },
   banner: {
     flexDirection: 'row',
     flexWrap: 'wrap',
