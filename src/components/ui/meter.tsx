@@ -24,7 +24,7 @@ export function Meter({
   return (
     <View style={styles.wrap}>
       <View style={styles.row}>
-        <AppText variant="caption" weight={500} tone="muted">
+        <AppText variant="caption" weight={500} tone="muted" style={styles.label}>
           {label}
         </AppText>
         <AppText variant="caption" style={styles.numbers}>
@@ -44,9 +44,10 @@ export function Meter({
 }
 
 const styles = StyleSheet.create({
-  wrap: { flex: 1, gap: 4 },
+  wrap: { alignSelf: 'stretch', gap: 4 },
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline', gap: 8 },
-  numbers: { fontVariant: ['tabular-nums'] },
+  label: { flexShrink: 1 },
+  numbers: { fontVariant: ['tabular-nums'], flexShrink: 1 },
   track: { height: 6, borderRadius: 999, overflow: 'hidden' },
   fill: { height: '100%', borderRadius: 999 },
 });

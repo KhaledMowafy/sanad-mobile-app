@@ -1,6 +1,9 @@
 import { IntlMessageFormat } from 'intl-messageformat';
 import ar from './messages/ar.json';
 import en from './messages/en.json';
+import { installPluralRules } from './plural-rules';
+
+installPluralRules();
 
 export type Locale = 'ar' | 'en';
 

@@ -147,7 +147,8 @@ export function MonthUsage({ usage }: { usage: UserPeriodUsage | null }) {
 
 const styles = StyleSheet.create({
   wrap: { gap: 8 },
-  meters: { flexDirection: 'row', gap: 16 },
+  // One under the other: two side by side do not fit a phone once the numbers are long.
+  meters: { gap: 10 },
   banner: {
     flexDirection: 'row',
     flexWrap: 'wrap',
