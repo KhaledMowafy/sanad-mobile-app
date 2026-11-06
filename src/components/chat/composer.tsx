@@ -65,11 +65,14 @@ function Pill({
   label,
   active,
   onPress,
+  iconOnly = false,
   children,
 }: {
   label: string;
   active: boolean;
   onPress: () => void;
+  /** Shows only the icon; the label is still what a screen reader says. */
+  iconOnly?: boolean;
   children?: React.ReactNode;
 }) {
   const { colors } = useTheme();
@@ -88,9 +91,11 @@ function Pill({
       ]}
     >
       {children}
-      <AppText variant="caption" weight={600} tone={active ? 'primary' : 'muted'}>
-        {label}
-      </AppText>
+      {iconOnly ? null : (
+        <AppText variant="caption" weight={600} tone={active ? 'primary' : 'muted'}>
+          {label}
+        </AppText>
+      )}
     </Pressable>
   );
 }
@@ -116,6 +121,7 @@ export function Composer({
   onAttach,
   onDetach,
   onNewConversation,
+  compact = false,
 }: {
   onSend: (text: string, options: { mode: ComposerMode }) => void;
   onStop: () => void;
@@ -133,6 +139,8 @@ export function Composer({
   onAttach?: (files: PickedFile[]) => void;
   onDetach?: (id: string) => void;
   onNewConversation: () => void;
+  /** A conversation is open, so the screen is short on room: drop the file limits line. */
+  compact?: boolean;
 }) {
   const t = useT('chat.composer');
   const mobile = useT('mobile');
@@ -355,7 +363,12 @@ export function Composer({
               onPress={() => onModeChange?.(mode.kind === 'review' ? ASK_MODE : { kind: 'review' })}
             />
             {onOpenTemplates ? (
-              <Pill label={t('templates')} active={mode.kind === 'template'} onPress={onOpenTemplates}>
+              <Pill
+                label={t('templates')}
+                active={mode.kind === 'template'}
+                onPress={onOpenTemplates}
+                iconOnly
+              >
                 <FileText size={14} color={mode.kind === 'template' ? colors.primaryText : colors.textMuted} />
               </Pill>
             ) : null}
@@ -399,7 +412,7 @@ export function Composer({
       ) : null}
 
       <View style={styles.notes}>
-        {onAttach ? (
+        {onAttach && !compact ? (
           <AppText variant="caption" tone="subtle" align="center">
             {limitsText}
           </AppText>

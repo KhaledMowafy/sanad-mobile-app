@@ -125,11 +125,12 @@ export function ChatView({
         onAttach={(files) => void store.getState().attach(files)}
         onDetach={(fileId) => store.getState().detach(fileId)}
         onNewConversation={onNewChat}
+        compact={messages.length > 0 || drafts.length > 0}
       />
     ),
     // `send` only closes over the store and the mode setter, both stable.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [streaming, attachments, uploading, uploadProgress, attachmentError, draftError, currentUsage, draftBusy, mode],
+    [streaming, attachments, uploading, uploadProgress, attachmentError, draftError, currentUsage, draftBusy, mode, messages.length, drafts.length],
   );
 
   const empty = messages.length === 0 && drafts.length === 0;
