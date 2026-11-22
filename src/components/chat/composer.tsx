@@ -19,6 +19,7 @@ import { Sheet } from '@/components/ui/sheet';
 import { AppText } from '@/components/ui/text';
 import { pastedTextName, pastedTextNumber } from '@/domain/entities/attachment';
 import { blockingLimit } from '@/domain/entities/usage';
+import { isDescribedTemplate } from '@/domain/entities/template';
 import { useT, type Translator } from '@/i18n/use-t';
 import type { PickedFile } from '@/presentation/chat/attachment-client';
 import { ASK_MODE, type ComposerMode } from '@/presentation/chat/composer-mode';
@@ -39,7 +40,12 @@ function defaultRequest(mode: ComposerMode, t: Translator): string {
 function placeholderFor(mode: ComposerMode, t: Translator): string {
   if (mode.kind === 'memo') return t('memoPlaceholder');
   if (mode.kind === 'review') return t('reviewPlaceholder');
-  if (mode.kind === 'template') return t('templatePlaceholder');
+  if (mode.kind === 'template') {
+    // A described paper has no form: say what the description should hold.
+    return isDescribedTemplate(mode.template)
+      ? t(`describe.${mode.template.code}`)
+      : t('templatePlaceholder');
+  }
   return t('placeholder');
 }
 

@@ -83,6 +83,9 @@ export interface DraftDto {
   conversationId: string | null;
   templateCode: string | null;
   templateName: string | null;
+  title: string | null;
+  stage: string | null;
+  review: string | null;
   prompt: string;
   status: DraftStatus;
   error: string | null;

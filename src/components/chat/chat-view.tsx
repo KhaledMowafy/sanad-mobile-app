@@ -6,7 +6,6 @@ import { useStore } from 'zustand';
 import type { MessageDto, TemplateDto, UsageSnapshotDto } from '@/application/dto/dto';
 import { IconButton } from '@/components/ui/icon-button';
 import { AppText } from '@/components/ui/text';
-import { UseCaseCards, type UseCaseKey } from '@/components/use-case-cards';
 import { isWizardTemplate, type TemplateGroup } from '@/domain/entities/template';
 import { useT } from '@/i18n/use-t';
 import { createChatStore, type ChatStore } from '@/presentation/chat/chat-store';
@@ -95,13 +94,6 @@ export function ChatView({
     if (options?.mode && options.mode.kind !== 'ask') setMode(ASK_MODE);
   };
 
-  /** What each card does here: pick how Send behaves, or open the list of documents. */
-  const pickUseCase = (key: UseCaseKey) => {
-    if (key === 'draft') return setPicker({ open: true, group: 'contract' });
-    if (key === 'notice') return setPicker({ open: true, group: 'paperwork' });
-    setMode(key === 'memo' ? { kind: 'memo' } : key === 'review' ? { kind: 'review' } : ASK_MODE);
-  };
-
   const pickTemplate = (template: TemplateDto) => {
     if (isWizardTemplate(template)) void store.getState().startContract(template);
     else setMode({ kind: 'template', template });
@@ -167,12 +159,7 @@ export function ChatView({
       <KeyboardAvoidingView style={styles.fill} behavior="padding">
         {empty ? (
           <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.scroll}>
-            <EmptyState
-              name={userName}
-              evening={evening}
-              onAsk={(question) => send(question)}
-              cards={<UseCaseCards onPick={pickUseCase} showHints />}
-            >
+            <EmptyState name={userName} evening={evening}>
               {composer}
             </EmptyState>
           </ScrollView>

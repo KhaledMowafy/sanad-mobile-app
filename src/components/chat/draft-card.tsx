@@ -9,10 +9,12 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { AppText } from '@/components/ui/text';
 import { useT } from '@/i18n/use-t';
+import { isDescribedTemplate } from '@/domain/entities/template';
 import { getContainer } from '@/infrastructure/di/container';
 import { formatTime } from '@/presentation/lib/format';
 import { useTheme } from '@/theme/theme';
 import { radius } from '@/theme/tokens';
+import { AnswerMarkdown } from './answer-markdown';
 
 /** Parts of the document the person must fill in, marked "[يُملأ: ...]" by the backend. */
 const PLACEHOLDER = /(\[\s*يُملأ[^\]]*\])/u;
@@ -50,9 +52,12 @@ export function DraftCard({ draft }: { draft: DraftDto }) {
   const mobile = useT('mobile');
   const { colors, locale } = useTheme();
   const [showText, setShowText] = useState(false);
+  const [showReview, setShowReview] = useState(false);
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
 
+  // A described paper is named by what it is, «عقد مقاولة», not by «عقد آخر (اكتب وصفه)».
+  const name = draft.title ?? draft.templateName ?? t('title');
   const working = draft.status === 'queued' || draft.status === 'reading' || draft.status === 'generating';
   const hasPlaceholders = draft.output !== null && PLACEHOLDER.test(draft.output);
   const tone = draft.status === 'done' ? 'success' : draft.status === 'failed' ? 'error' : 'muted';
@@ -84,11 +89,11 @@ export function DraftCard({ draft }: { draft: DraftDto }) {
   };
 
   return (
-    <Card accessibilityLabel={draft.templateName ?? t('title')} style={styles.card}>
+    <Card accessibilityLabel={name} style={styles.card}>
       <View style={styles.head}>
         <FileText size={20} color={colors.primaryText} />
         <AppText variant="h4" style={styles.title}>
-          {draft.templateName ?? t('title')}
+          {name}
         </AppText>
         <AppText variant="caption" tone="subtle">
           {formatTime(draft.createdAt, locale)}
@@ -116,9 +121,14 @@ export function DraftCard({ draft }: { draft: DraftDto }) {
         </AppText>
       ) : null}
 
+      {working && draft.stage ? (
+        <AppText variant="small" accessibilityLiveRegion="polite">
+          {draft.stage}
+        </AppText>
+      ) : null}
       {working ? (
         <AppText variant="small" tone="subtle">
-          {t('wait')}
+          {draft.templateCode && isDescribedTemplate({ code: draft.templateCode }) ? t('waitDescribed') : t('wait')}
         </AppText>
       ) : null}
 
@@ -143,7 +153,22 @@ export function DraftCard({ draft }: { draft: DraftDto }) {
                 onPress={() => setShowText((value) => !value)}
               />
             ) : null}
+            {draft.review ? (
+              <Button
+                variant="secondary"
+                label={showReview ? t('hideReview') : t('showReview')}
+                onPress={() => setShowReview((value) => !value)}
+              />
+            ) : null}
           </View>
+          {showReview && draft.review ? (
+            <View style={[styles.text, { backgroundColor: colors.surfaceSunken }]}>
+              <AppText variant="caption" tone="muted">
+                {t('reviewHint')}
+              </AppText>
+              <AnswerMarkdown>{draft.review}</AnswerMarkdown>
+            </View>
+          ) : null}
           {failed ? <Banner tone="error">{t('downloadFailed')}</Banner> : null}
           {showText && draft.output ? (
             <>

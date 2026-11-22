@@ -23,6 +23,7 @@ import {
   GetSubscription,
   ListPayments,
   StartCheckout,
+  StartTrial,
 } from '@/application/use-cases/billing';
 import {
   DeleteConversation,
@@ -131,6 +132,7 @@ function build() {
       getCatalogue: new GetCatalogue(billing),
       getSubscription: new GetSubscription(billing),
       startCheckout: new StartCheckout(billing),
+      startTrial: new StartTrial(billing),
       getPayment: new GetPayment(billing),
       listPayments: new ListPayments(billing),
       listTemplates: new ListTemplates(templates),

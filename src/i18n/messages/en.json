@@ -311,23 +311,7 @@
     "empty": {
       "morning": "Good morning, {name}",
       "evening": "Good evening, {name}",
-      "body": "Ask about any question of Egyptian law. Every answer comes with the article it rests on, so you can review it yourself.",
-      "startersLabel": "Start with one of these questions",
-      "starters": [
-        {
-          "topic": "Contracts",
-          "q": "What is the difference between judicial and contractual rescission in the Civil Code?"
-        },
-        {
-          "topic": "Civil liability",
-          "q": "What is the limitation period for a tort claim, and when does it start?"
-        },
-        {
-          "topic": "Procedure",
-          "q": "How is the deadline for appealing a civil judgment calculated?"
-        }
-      ],
-      "casesLabel": "What do you want to do?"
+      "body": "Ask about any question of Egyptian law. Every answer comes with the article it rests on, so you can review it yourself."
     },
     "composer": {
       "label": "Write your legal question",
@@ -383,7 +367,12 @@
       "templates": "Document templates",
       "modeTemplate": "Document: {name}",
       "clearMode": "Clear the chosen document",
-      "attachDefault": "Analyse the facts in the attached file."
+      "attachDefault": "Analyse the facts in the attached file.",
+      "describe": {
+        "custom_contract": "Describe the contract you need: its type, parties, subject, price, term and main conditions",
+        "lawsuit_petition": "Write the type of suit and its facts: plaintiff and defendant, what happened, what you ask the court for, and the court if you know it",
+        "custom_paperwork": "Write the paper you need (notice, service, request, grievance, complaint…), who it is addressed to, its facts, and what it asks for"
+      }
     },
     "message": {
       "assistantName": "Sanadak",
@@ -484,7 +473,11 @@
       "warning": "Note",
       "error": "Why it failed",
       "placeholderHint": "Highlighted items marked \"يُملأ\" are details you add before filing the document.",
-      "statusLabel": "Document status"
+      "statusLabel": "Document status",
+      "waitDescribed": "Written from the books of forms and the law, then reviewed and revised. Usually 3 to 6 minutes.",
+      "showReview": "What the review changed",
+      "hideReview": "Hide the review",
+      "reviewHint": "The first draft was reviewed, and the document revised for the following:"
     },
     "templates": {
       "contractTitle": "Choose the contract",
@@ -498,7 +491,8 @@
       "retry": "Try again",
       "empty": "No matching templates.",
       "wizard": "Sanadak asks for the details one at a time",
-      "close": "Close"
+      "close": "Close",
+      "described": "Describe it in your own words; it is written from the books of forms and the law, and reviewed"
     }
   },
   "features": {
@@ -785,6 +779,16 @@
       "toChat": "Back to conversations",
       "missing": "There is no payment to show.",
       "unreadable": "The payment status could not be read. Open your account to check your balance."
+    },
+    "freeTier": "Free plan",
+    "freeTierNote": "Renews on the 1st of every month: {tokens} tokens and {pages} page reads.",
+    "freeReturns": "The free plan comes back on {date}.",
+    "trialOffer": {
+      "start": "Try {name} free for {days} days",
+      "terms": "Once per account, no payment: {tokens} tokens and {pages} page reads. If you do not subscribe afterwards, you go back to the free plan from the 1st of the next month.",
+      "started": "Your free trial has started. It ends on {date}.",
+      "failed": "The free trial could not be started. You may have used it already.",
+      "running": "Free trial until {date}. Subscribe before then to keep the plan."
     }
   },
   "pricing": {

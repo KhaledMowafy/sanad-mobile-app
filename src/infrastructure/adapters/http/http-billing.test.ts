@@ -5,6 +5,7 @@ import {
   GetSubscription,
   ListPayments,
   StartCheckout,
+  StartTrial,
 } from '@/application/use-cases/billing';
 import { canBuyPack, estimateRequests, planAction, type Plan } from '@/domain/entities/billing';
 import { blockingLimit } from '@/domain/entities/usage';
@@ -162,6 +163,73 @@ describe('HttpBillingGateway', () => {
     });
   });
 
+  it('reads the free month, and the trial on offer', async () => {
+    const { fetch } = fakeFetch([
+      json(
+        200,
+        envelope({
+          billing_enabled: true,
+          billed: true,
+          subscription: null,
+          period: {
+            kind: 'FREE',
+            start: '2026-11-01T00:00:00+02:00',
+            end: '2026-12-01T00:00:00+02:00',
+            tokens: 18_000,
+            pages: 20,
+            topup_carried: 0,
+          },
+          trial: {
+            available: true,
+            plan: rawPlan('standard', 30000, 1_000_000, 100, 10),
+            days: 7,
+            tokens: 233_333,
+            pages: 23,
+          },
+          usage: periodUsage({ plan: null, subscription: null }),
+        }),
+      ),
+    ]);
+    const result = await new GetSubscription(new HttpBillingGateway(clientFor(fetch))).execute();
+    expect(result).toMatchObject({
+      ok: true,
+      value: {
+        subscription: null,
+        period: { kind: 'FREE', tokens: 18_000, pages: 20 },
+        trial: { available: true, plan: { code: 'standard' }, days: 7, tokens: 233_333, pages: 23 },
+      },
+    });
+  });
+
+  it('starts the trial with an empty POST and reads what it opened', async () => {
+    const { fetch, calls } = fakeFetch([
+      json(
+        201,
+        envelope({
+          billing_enabled: true,
+          billed: true,
+          subscription: {
+            plan: rawPlan('standard', 30000, 1_000_000, 100, 10),
+            status: 'TRIAL',
+            method: '',
+            auto_renew: false,
+            paid_until: '2026-11-30T10:00:00+02:00',
+          },
+          period: null,
+          trial: null,
+          usage: periodUsage(),
+        }),
+      ),
+    ]);
+    const result = await new StartTrial(new HttpBillingGateway(clientFor(fetch))).execute();
+    expect(calls[0]?.method).toBe('POST');
+    expect(calls[0]?.url.pathname).toBe('/api/billing/trial');
+    expect(result).toMatchObject({
+      ok: true,
+      value: { subscription: { status: 'TRIAL', plan: { code: 'standard' } }, trial: null },
+    });
+  });
+
   it('starts a checkout with a plan or a pack and the chosen method, never an amount', async () => {
     const { fetch, calls } = fakeFetch([
       json(201, envelope({ payment_id: 17, checkout_url: 'https://eg.checkout.paymob.com/?x=1' })),
@@ -292,6 +360,12 @@ describe('what a plan can do from where the account stands', () => {
   it('offers every plan to an account with none, or on a trial', () => {
     expect(planAction(pro, null)).toBe('subscribe');
     expect(planAction(pro, { ...onPro, plan: null, status: 'TRIAL' })).toBe('subscribe');
+  });
+
+  it('offers the tried plan, and every other, to buy during its trial', () => {
+    const trying = { ...onPro, plan: standard, status: 'TRIAL' as const };
+    expect(planAction(standard, trying)).toBe('subscribe');
+    expect(planAction(pro, trying)).toBe('subscribe');
   });
 
   it('marks the current plan, upgrades to a larger one and holds back a smaller one', () => {

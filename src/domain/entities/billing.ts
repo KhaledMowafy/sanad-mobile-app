@@ -29,7 +29,7 @@ export interface Catalogue {
 export type SubscriptionStatus = 'TRIAL' | 'ACTIVE' | 'PAST_DUE' | 'CANCELED' | 'EXPIRED';
 
 export interface Subscription {
-  /** Null for the trial, which is no plan. */
+  /** On a TRIAL, the plan being tried, not paid for. Null on a trial from before plans had one. */
   readonly plan: Plan | null;
   readonly status: SubscriptionStatus;
   readonly method: string;
@@ -37,7 +37,11 @@ export interface Subscription {
   readonly paidUntil: string | null;
 }
 
-export type PeriodKind = 'TRIAL' | 'PLAN' | 'TOPUP';
+/**
+ * PLAN, paid for; TRIAL, a plan tried free; FREE, the free allowance for the calendar month;
+ * TOPUP, only top-up tokens, between a plan or trial and the next free month.
+ */
+export type PeriodKind = 'TRIAL' | 'PLAN' | 'FREE' | 'TOPUP';
 
 /** The billing period the allowance is measured over. */
 export interface BillingPeriod {
@@ -51,6 +55,17 @@ export interface BillingPeriod {
   readonly topupCarried: number;
 }
 
+/** The plan that can be tried free, once per account (`POST billing/trial`). */
+export interface TrialOffer {
+  /** This account may start it now: it never had one, and no paid plan is running. */
+  readonly available: boolean;
+  readonly plan: Plan;
+  readonly days: number;
+  /** The plan's share for those days. */
+  readonly tokens: number;
+  readonly pages: number;
+}
+
 /** What `GET billing/subscription` says: the plan, the period and what is left. */
 export interface SubscriptionInfo {
   readonly billingEnabled: boolean;
@@ -58,6 +73,8 @@ export interface SubscriptionInfo {
   readonly billed: boolean;
   readonly subscription: Subscription | null;
   readonly period: BillingPeriod | null;
+  /** Null when there is no trial on offer, or billing does not apply to the account. */
+  readonly trial: TrialOffer | null;
   readonly usage: UserPeriodUsage | null;
 }
 
@@ -86,10 +103,11 @@ export type PlanAction = 'current' | 'subscribe' | 'upgrade' | 'later';
 /**
  * A larger plan than the running one is an upgrade, starting at once. The same plan or a smaller
  * one is refused by the backend (a smaller plan starts at renewal, which is not built yet), so the
- * screen does not offer it. A trial is no plan: any plan is a subscription.
+ * screen does not offer it. A trial was never paid for: any plan is a subscription, the tried one
+ * included.
  */
 export function planAction(plan: Plan, current: Subscription | null): PlanAction {
-  const running = current?.plan ?? null;
+  const running = current?.status === 'TRIAL' ? null : (current?.plan ?? null);
   if (running === null) return 'subscribe';
   if (running.code === plan.code) return 'current';
   return plan.tokens > running.tokens ? 'upgrade' : 'later';

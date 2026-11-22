@@ -6,8 +6,17 @@ export interface Draft {
   readonly conversationId: string | null;
   /** The template it was asked with, or null for a defence memo. */
   readonly templateCode: string | null;
-  /** The document's Arabic name, for the card's title. */
+  /** The template's Arabic name. */
   readonly templateName: string | null;
+  /**
+   * The paper's own name, «عقد مقاولة», for one the person described in words («عقد آخر»,
+   * «صحيفة دعوى», «أخرى»). The card shows it rather than the template's name.
+   */
+  readonly title: string | null;
+  /** While it is being written: the step it is at, in Arabic. */
+  readonly stage: string | null;
+  /** What the review found and the revision changed, as Markdown, on a described paper. */
+  readonly review: string | null;
   /** What the person typed. It is not a chat message, so the draft carries it. */
   readonly prompt: string;
   readonly status: DraftStatus;

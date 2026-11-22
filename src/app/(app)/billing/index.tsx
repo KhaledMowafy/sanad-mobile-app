@@ -72,9 +72,31 @@ export default function Billing() {
     void Linking.openURL(`${SITE_URL}${path}`).catch(() => undefined);
   };
 
+  const [trialBusy, setTrialBusy] = useState(false);
+  const [trialNote, setTrialNote] = useState<{ tone: 'success' | 'error'; text: string } | null>(null);
+
+  /** Free, so it starts here rather than on the website. Once per account. */
+  const startTrial = async () => {
+    setTrialBusy(true);
+    setTrialNote(null);
+    const result = await getContainer().useCases.startTrial.execute();
+    setTrialBusy(false);
+    if (!result.ok) return setTrialNote({ tone: 'error', text: t('trialOffer.failed') });
+    const ends = result.value.subscription?.paidUntil ?? result.value.period?.end ?? null;
+    setTrialNote({
+      tone: 'success',
+      text: t('trialOffer.started', { date: ends ? formatDate(ends, locale) : '' }),
+    });
+    void load();
+  };
+
   const info = data?.info ?? null;
   const subscription = info?.subscription ?? null;
-  const planName = subscription?.plan?.name ?? (subscription?.status === 'TRIAL' ? t('trial') : null);
+  const period = info?.period ?? null;
+  const trial = info?.trial ?? null;
+  const planName =
+    subscription?.plan?.name ??
+    (subscription?.status === 'TRIAL' ? t('trial') : period?.kind === 'FREE' ? t('freeTier') : null);
   const end = info?.period?.end ?? subscription?.paidUntil ?? null;
   const billingOn = info?.billingEnabled ?? true;
   // Staff, and accounts with a fixed quota, are not limited by a plan and have nothing to buy.
@@ -143,7 +165,24 @@ export default function Billing() {
                       </AppText>
                     ) : null}
                   </View>
+                  {subscription?.status === 'TRIAL' && end ? (
+                    <AppText variant="small" tone="muted">
+                      {t('trialOffer.running', { date: formatDate(end, locale) })}
+                    </AppText>
+                  ) : period?.kind === 'FREE' ? (
+                    <AppText variant="small" tone="muted">
+                      {t('freeTierNote', {
+                        tokens: formatNumber(period.tokens),
+                        pages: formatNumber(period.pages),
+                      })}
+                    </AppText>
+                  ) : !subscription && period?.kind === 'TOPUP' && end ? (
+                    <AppText variant="small" tone="muted">
+                      {t('freeReturns', { date: formatDate(end, locale) })}
+                    </AppText>
+                  ) : null}
                 </Card>
+                {trialNote ? <Banner tone={trialNote.tone}>{trialNote.text}</Banner> : null}
 
                 <Banner tone="info">{mobile('billing.hint')}</Banner>
                 <View style={styles.stack}>
@@ -164,8 +203,28 @@ export default function Billing() {
                 <PlanCard
                   key={plan.code}
                   plan={plan}
-                  highlighted={planAction(plan, subscription) === 'current'}
-                />
+                  highlighted={
+                    planAction(plan, subscription) === 'current' ||
+                    (subscription?.status === 'TRIAL' && subscription.plan?.code === plan.code)
+                  }
+                >
+                  {canBuy && trial?.available && trial.plan.code === plan.code ? (
+                    <>
+                      <Button
+                        label={t('trialOffer.start', { name: plan.name, days: formatNumber(trial.days) })}
+                        loading={trialBusy}
+                        onPress={() => void startTrial()}
+                        block
+                      />
+                      <AppText variant="small" tone="muted">
+                        {t('trialOffer.terms', {
+                          tokens: formatNumber(trial.tokens),
+                          pages: formatNumber(trial.pages),
+                        })}
+                      </AppText>
+                    </>
+                  ) : null}
+                </PlanCard>
               ))}
               <AppText variant="small" tone="muted">
                 {t('estimates')}

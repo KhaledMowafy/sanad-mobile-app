@@ -13,6 +13,8 @@ export interface BillingGateway {
   /** The plans and packs on sale. Public: a pricing page is read before anyone signs up. */
   catalogue(): Promise<Result<Catalogue, AppError>>;
   subscription(): Promise<Result<SubscriptionInfo, AppError>>;
+  /** Starts the free trial of a plan, once per account. Returns what it opened. */
+  startTrial(): Promise<Result<SubscriptionInfo, AppError>>;
   /**
    * Starts a payment and returns the gateway's hosted page. Nothing is granted here: the plan or
    * tokens arrive when the payment gateway notifies the backend.

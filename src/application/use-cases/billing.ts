@@ -19,6 +19,15 @@ export class GetSubscription {
   }
 }
 
+export class StartTrial {
+  constructor(private readonly billing: BillingGateway) {}
+
+  /** Free and once per account; the backend refuses a second one, or one while a plan runs. */
+  execute(): Promise<Result<SubscriptionInfo, AppError>> {
+    return this.billing.startTrial();
+  }
+}
+
 export class StartCheckout {
   constructor(private readonly billing: BillingGateway) {}
 

@@ -38,10 +38,17 @@ const STATUSES: Record<string, DraftStatus> = {
   FAILED: 'failed',
 };
 
-function warningOf(facts: unknown): string | null {
+/** A non-empty string under `key` in the draft's facts, or null. */
+function factOf(facts: unknown, key: string): string | null {
   if (!facts || typeof facts !== 'object') return null;
-  const warning = (facts as Record<string, unknown>).warning;
-  return typeof warning === 'string' && warning.trim() ? warning.trim() : null;
+  const value = (facts as Record<string, unknown>)[key];
+  return typeof value === 'string' && value.trim() ? value.trim() : null;
+}
+
+/** `facts.stage` is `{stage, text}` while the draft is written, and gone once it is done. */
+function stageOf(facts: unknown): string | null {
+  if (!facts || typeof facts !== 'object') return null;
+  return factOf((facts as Record<string, unknown>).stage, 'text');
 }
 
 export function toDraft(api: ApiDraft): Draft {
@@ -50,11 +57,14 @@ export function toDraft(api: ApiDraft): Draft {
     conversationId: api.conversation == null ? null : String(api.conversation),
     templateCode: api.template_code?.trim() || null,
     templateName: api.template_name?.trim() || null,
+    title: factOf(api.facts, 'title'),
+    stage: stageOf(api.facts),
+    review: factOf(api.facts, 'review'),
     prompt: api.prompt ?? '',
     // An unknown status is treated as still working: the card keeps polling, never wrongly done.
     status: STATUSES[api.status.toUpperCase()] ?? 'generating',
     error: api.error?.trim() || null,
-    warning: warningOf(api.facts),
+    warning: factOf(api.facts, 'warning'),
     output: api.output?.trim() ? api.output : null,
     createdAt: new Date(api.created_at),
     finishedAt: api.finished_at ? new Date(api.finished_at) : null,

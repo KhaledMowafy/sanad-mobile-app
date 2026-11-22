@@ -88,6 +88,47 @@ describe('HttpDraftGateway', () => {
     });
   });
 
+  it('reads a described paper by its own name, with its review', async () => {
+    const { fetch } = fakeFetch([
+      json(
+        200,
+        envelope(
+          rawDraft({
+            status: 'DONE',
+            template_code: 'custom_contract',
+            template_name: 'عقد آخر (اكتب وصفه)',
+            output: 'عقد مقاولة',
+            facts: { title: 'عقد مقاولة', review: '| البند | الحكم |', corrected: [] },
+          }),
+        ),
+      ),
+    ]);
+    const result = await new HttpDraftGateway(clientFor(fetch)).get('31');
+    expect(result).toMatchObject({
+      ok: true,
+      value: { title: 'عقد مقاولة', templateName: 'عقد آخر (اكتب وصفه)', review: '| البند | الحكم |', stage: null },
+    });
+  });
+
+  it('reads the step a draft is at while it is written, and nothing once it is done', async () => {
+    const { fetch } = fakeFetch([
+      json(
+        200,
+        envelope(
+          rawDraft({
+            status: 'GENERATING',
+            facts: { stage: { stage: 'review', text: 'جارٍ مراجعة مسودة العقد' } },
+          }),
+        ),
+      ),
+      json(200, envelope(rawDraft({ status: 'DONE', facts: { stage: 'review' } }))),
+    ]);
+    const gateway = new HttpDraftGateway(clientFor(fetch));
+    expect(await gateway.get('31')).toMatchObject({ ok: true, value: { stage: 'جارٍ مراجعة مسودة العقد', title: null } });
+    // A stage that is not {stage, text} is not shown rather than shown wrong.
+    expect(await gateway.get('31')).toMatchObject({ ok: true, value: { stage: null } });
+  });
+
   it('lists the memos of one conversation from the paginated envelope', async () => {
     const { fetch, calls } = fakeFetch([
       json(200, envelope([rawDraft(), rawDraft({ id: 30 })], { next: null, previous: null })),

@@ -5,7 +5,12 @@ import type { TemplateDto } from '@/application/dto/dto';
 import { Button } from '@/components/ui/button';
 import { Sheet } from '@/components/ui/sheet';
 import { AppText } from '@/components/ui/text';
-import { isWizardTemplate, templateGroupOf, type TemplateGroup } from '@/domain/entities/template';
+import {
+  isDescribedTemplate,
+  isWizardTemplate,
+  templateGroupOf,
+  type TemplateGroup,
+} from '@/domain/entities/template';
 import { useT } from '@/i18n/use-t';
 import { templateApi } from '@/presentation/chat/template-client';
 import { useTheme } from '@/theme/theme';
@@ -155,6 +160,10 @@ export function TemplatePicker({
                   {isWizardTemplate(item) ? (
                     <AppText variant="caption" tone="primary">
                       {t('wizard')}
+                    </AppText>
+                  ) : isDescribedTemplate(item) ? (
+                    <AppText variant="caption" tone="primary">
+                      {t('described')}
                     </AppText>
                   ) : null}
                 </Pressable>

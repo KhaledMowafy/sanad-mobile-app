@@ -20,6 +20,20 @@ export function isWizardTemplate(template: Pick<Template, 'code'>): boolean {
   return WIZARD_TEMPLATE_CODES.includes(template.code);
 }
 
+/**
+ * Templates with no form to fill: the person describes the paper in words and it is written from
+ * the books of forms and the law, then reviewed and revised. «عقد آخر» last among the contracts,
+ * «صحيفة دعوى» first among the papers and «أخرى» last; the API lists them in that order.
+ */
+export const DESCRIBED_TEMPLATE_CODES = ['custom_contract', 'lawsuit_petition', 'custom_paperwork'] as const;
+export type DescribedTemplateCode = (typeof DESCRIBED_TEMPLATE_CODES)[number];
+
+export function isDescribedTemplate(
+  template: Pick<Template, 'code'>,
+): template is Pick<Template, 'code'> & { code: DescribedTemplateCode } {
+  return (DESCRIBED_TEMPLATE_CODES as readonly string[]).includes(template.code);
+}
+
 /** The defence memo is a template too, but it has its own card and is asked without a code. */
 export const DEFENCE_MEMO_CODE = 'defense_memo';
 

@@ -6,6 +6,7 @@ import type {
   Catalogue,
   Payment,
   PaymentStatus,
+  PeriodKind,
   Plan,
   SubscriptionInfo,
   SubscriptionStatus,
@@ -58,6 +59,15 @@ const subscriptionSchema = z.looseObject({
       tokens: z.number(),
       pages: z.number(),
       topup_carried: z.number(),
+    })
+    .nullish(),
+  trial: z
+    .looseObject({
+      available: z.boolean(),
+      plan: planSchema,
+      days: z.number(),
+      tokens: z.number(),
+      pages: z.number(),
     })
     .nullish(),
   /** The usage block; read by usage-mappers. */
@@ -132,6 +142,47 @@ export function toPayment(api: z.infer<typeof paymentSchema>): Payment {
   };
 }
 
+const PERIOD_KINDS: readonly PeriodKind[] = ['TRIAL', 'PLAN', 'FREE', 'TOPUP'];
+
+function toSubscriptionInfo(v: z.infer<typeof subscriptionSchema>): SubscriptionInfo {
+  const status = (v.subscription?.status ?? '').toUpperCase() as SubscriptionStatus;
+  const kind = (v.period?.kind ?? '').toUpperCase() as PeriodKind;
+  return {
+    billingEnabled: v.billing_enabled,
+    billed: v.billed,
+    subscription: v.subscription
+      ? {
+          plan: v.subscription.plan ? toPlan(v.subscription.plan) : null,
+          status: SUBSCRIPTION_STATUSES.includes(status) ? status : 'ACTIVE',
+          method: v.subscription.method ?? '',
+          autoRenew: v.subscription.auto_renew ?? false,
+          paidUntil: v.subscription.paid_until ?? null,
+        }
+      : null,
+    period: v.period
+      ? {
+          // An unknown kind is read as a plan's period: it has an end and figures, as one does.
+          kind: PERIOD_KINDS.includes(kind) ? kind : 'PLAN',
+          start: v.period.start,
+          end: v.period.end ?? null,
+          tokens: v.period.tokens,
+          pages: v.period.pages,
+          topupCarried: v.period.topup_carried,
+        }
+      : null,
+    trial: v.trial
+      ? {
+          available: v.trial.available,
+          plan: toPlan(v.trial.plan),
+          days: v.trial.days,
+          tokens: v.trial.tokens,
+          pages: v.trial.pages,
+        }
+      : null,
+    usage: toUserPeriodUsage(v.usage),
+  };
+}
+
 export class HttpBillingGateway implements BillingGateway {
   constructor(private readonly client: ApiClient) {}
 
@@ -153,34 +204,16 @@ export class HttpBillingGateway implements BillingGateway {
       path: '/billing/subscription',
       schema: subscriptionSchema,
     });
-    if (!result.ok) return result;
-    const v = result.value;
-    const status = (v.subscription?.status ?? '').toUpperCase() as SubscriptionStatus;
-    const kind = v.period?.kind.toUpperCase();
-    return ok({
-      billingEnabled: v.billing_enabled,
-      billed: v.billed,
-      subscription: v.subscription
-        ? {
-            plan: v.subscription.plan ? toPlan(v.subscription.plan) : null,
-            status: SUBSCRIPTION_STATUSES.includes(status) ? status : 'ACTIVE',
-            method: v.subscription.method ?? '',
-            autoRenew: v.subscription.auto_renew ?? false,
-            paidUntil: v.subscription.paid_until ?? null,
-          }
-        : null,
-      period: v.period
-        ? {
-            kind: kind === 'TRIAL' || kind === 'TOPUP' ? kind : 'PLAN',
-            start: v.period.start,
-            end: v.period.end ?? null,
-            tokens: v.period.tokens,
-            pages: v.period.pages,
-            topupCarried: v.period.topup_carried,
-          }
-        : null,
-      usage: toUserPeriodUsage(v.usage),
+    return result.ok ? ok(toSubscriptionInfo(result.value)) : result;
+  }
+
+  async startTrial(): Promise<Result<SubscriptionInfo, AppError>> {
+    const result = await this.client.request({
+      method: 'POST',
+      path: '/billing/trial',
+      schema: subscriptionSchema,
     });
+    return result.ok ? ok(toSubscriptionInfo(result.value)) : result;
   }
 
   async checkout(
