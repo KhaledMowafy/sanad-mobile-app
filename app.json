@@ -3,7 +3,7 @@
     "name": "Sanadak",
     "slug": "sanadak",
     "scheme": "sanadak",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -17,6 +17,7 @@
     },
     "android": {
       "package": "com.sanadak.app",
+      "versionCode": 2,
       "adaptiveIcon": {
         "backgroundColor": "#06483f",
         "foregroundImage": "./assets/android-icon-foreground.png",
