@@ -3,7 +3,7 @@
     "name": "Sanadak",
     "slug": "sanadak",
     "scheme": "sanadak",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -17,7 +17,7 @@
     },
     "android": {
       "package": "com.sanadak.app",
-      "versionCode": 2,
+      "versionCode": 3,
       "adaptiveIcon": {
         "backgroundColor": "#06483f",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -72,7 +72,8 @@
         {
           "iCloudContainerEnvironment": "Production"
         }
-      ]
+      ],
+      "./plugins/with-optional-portrait"
     ],
     "experiments": {
       "typedRoutes": false
