@@ -19,11 +19,16 @@ export class ChatStreamError extends Error {
  * the part of the text the screen has not seen; citations and references are sent once each.
  */
 function diff(
-  previous: { length: number; citations: number; references: number },
+  previous: { length: number; citations: number; references: number; stage: string | null },
   snapshot: StreamSnapshot,
 ): ChatStreamEvent[] {
   const { message } = snapshot;
   const events: ChatStreamEvent[] = [];
+  const stage = message.stage ?? null;
+  if (stage !== previous.stage) {
+    events.push({ type: 'stage', text: stage });
+    previous.stage = stage;
+  }
   if (message.content.length > previous.length) {
     events.push({ type: 'delta', text: message.content.slice(previous.length) });
   }
@@ -58,7 +63,7 @@ export async function* streamChat(
     throw new ChatStreamError(Object.values(fields)[0] ?? 'invalid_request');
   }
 
-  const seen = { length: 0, citations: 0, references: 0 };
+  const seen = { length: 0, citations: 0, references: 0, stage: null as string | null };
   yield { type: 'start', conversationId: request.conversationId };
 
   for await (const snapshot of streamAnswer.execute(prepared.value.request, signal)) {
@@ -76,6 +81,7 @@ export async function* streamChat(
         usage: message.usage,
         snapshot: snapshot.usage,
         draftRequestId: snapshot.draftRequestId,
+        corrected: message.corrected ?? 0,
       };
     }
   }

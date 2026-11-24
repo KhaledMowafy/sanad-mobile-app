@@ -388,7 +388,9 @@
       "sourcesCount": "{count, plural, one {# source} other {# sources}}",
       "warning": "Note",
       "stopped": "The answer was stopped.",
-      "retryHint": "Send your question again to retry."
+      "retryHint": "Send your question again to retry.",
+      "preparing": "Preparing",
+      "corrected": "{count, plural, one {One sentence was} other {# sentences were}} corrected against the articles’ text before sending."
     },
     "citation": {
       "chip": "Show the text of {article} of {law}",
@@ -477,7 +479,8 @@
       "waitDescribed": "Written from the books of forms and the law, then reviewed and revised. Usually 3 to 6 minutes.",
       "showReview": "What the review changed",
       "hideReview": "Hide the review",
-      "reviewHint": "The first draft was reviewed, and the document revised for the following:"
+      "reviewHint": "The first draft was reviewed, and the document revised for the following:",
+      "corrected": "{count, plural, one {One citation was} other {# citations were}} corrected against the article’s text. What could not be verified is marked «يُملأ»."
     },
     "templates": {
       "contractTitle": "Choose the contract",

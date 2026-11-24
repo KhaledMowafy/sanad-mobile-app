@@ -57,6 +57,10 @@ export interface MessageDto {
   feedback: Feedback | null;
   warning: string | null;
   usage: TokenCountDto | null;
+  /** The step a streaming answer is at, before its first word. */
+  stage?: string | null;
+  /** Sentences corrected against the articles' text before the answer was sent. */
+  corrected?: number;
 }
 
 export interface ChatAttachmentDto {
@@ -86,6 +90,7 @@ export interface DraftDto {
   title: string | null;
   stage: string | null;
   review: string | null;
+  corrected: number;
   prompt: string;
   status: DraftStatus;
   error: string | null;

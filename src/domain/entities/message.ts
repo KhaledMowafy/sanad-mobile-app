@@ -25,6 +25,13 @@ export interface Message {
   readonly warning: string | null;
   /** What this answer cost. Null on a question, or on a reply from before usage was recorded. */
   readonly usage: TokenCount | null;
+  /**
+   * While an answer is prepared and before its first word: the step it is at, in Arabic
+   * («جارٍ تحليل وقائع القضية…»). Gone once text arrives or the answer ends.
+   */
+  readonly stage?: string | null;
+  /** Sentences corrected against the articles' text before the answer was sent. */
+  readonly corrected?: number;
 }
 
 export function createUserMessage(input: {
@@ -69,7 +76,16 @@ export function startAssistantMessage(input: { id: string; createdAt: Date }): M
 }
 
 export function appendToken(message: Message, text: string): Message {
-  return { ...message, content: message.content + text };
+  return { ...message, content: message.content + text, stage: null };
+}
+
+/** The step the answer is at, shown until its first word arrives. */
+export function withStage(message: Message, stage: string): Message {
+  return { ...message, stage };
+}
+
+export function withCorrected(message: Message, corrected: number): Message {
+  return { ...message, corrected };
 }
 
 /** Same article cited twice in one answer collapses to one chip. */
@@ -103,15 +119,15 @@ export function withId(message: Message, id: string): Message {
 }
 
 export function completeMessage(message: Message): Message {
-  return { ...message, status: 'complete', errorCode: null };
+  return { ...message, status: 'complete', errorCode: null, stage: null };
 }
 
 export function stopMessage(message: Message): Message {
-  return { ...message, status: 'stopped' };
+  return { ...message, status: 'stopped', stage: null };
 }
 
 export function failMessage(message: Message, errorCode: string): Message {
-  return { ...message, status: 'error', errorCode };
+  return { ...message, status: 'error', errorCode, stage: null };
 }
 
 export function withFeedback(message: Message, feedback: Feedback | null): Message {

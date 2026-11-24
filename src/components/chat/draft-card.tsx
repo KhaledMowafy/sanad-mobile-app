@@ -136,6 +136,11 @@ export function DraftCard({ draft }: { draft: DraftDto }) {
         <Banner tone="error">{`${t('error')}: ${draft.error}`}</Banner>
       ) : null}
       {draft.warning ? <Banner tone="error">{`${t('warning')}: ${draft.warning}`}</Banner> : null}
+      {draft.status === 'done' && draft.corrected > 0 ? (
+        <AppText variant="caption" tone="subtle">
+          {t('corrected', { count: draft.corrected })}
+        </AppText>
+      ) : null}
 
       {draft.status === 'done' ? (
         <View style={styles.actions}>

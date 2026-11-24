@@ -27,6 +27,8 @@ export interface StreamAnswerRequest {
 
 export type ChatEvent =
   | { readonly type: 'token'; readonly text: string }
+  /** What the answer is doing before its first word. Replace the previous one. */
+  | { readonly type: 'stage'; readonly text: string }
   | { readonly type: 'citation'; readonly citation: Citation }
   | { readonly type: 'reference'; readonly reference: LibraryReference }
   | {
@@ -39,6 +41,8 @@ export type ChatEvent =
       readonly usage: { readonly answer: TokenCount; readonly snapshot: UsageSnapshot } | null;
       /** Set only on the turn that finishes a contract wizard: the contract is being drafted. */
       readonly draftRequestId: string | null;
+      /** Sentences corrected against the articles' text before the answer was sent. */
+      readonly corrected: number;
     }
   | {
       readonly type: 'error';

@@ -45,6 +45,14 @@ function factOf(facts: unknown, key: string): string | null {
   return typeof value === 'string' && value.trim() ? value.trim() : null;
 }
 
+/** `facts.corrected` is `[{article, before, after}]` on a finished draft whose citations were
+ * corrected; how many is what the card says. */
+function correctedOf(facts: unknown): number {
+  if (!facts || typeof facts !== 'object') return 0;
+  const corrected = (facts as Record<string, unknown>).corrected;
+  return Array.isArray(corrected) ? corrected.length : 0;
+}
+
 /** `facts.stage` is `{stage, text}` while the draft is written, and gone once it is done. */
 function stageOf(facts: unknown): string | null {
   if (!facts || typeof facts !== 'object') return null;
@@ -60,6 +68,7 @@ export function toDraft(api: ApiDraft): Draft {
     title: factOf(api.facts, 'title'),
     stage: stageOf(api.facts),
     review: factOf(api.facts, 'review'),
+    corrected: correctedOf(api.facts),
     prompt: api.prompt ?? '',
     // An unknown status is treated as still working: the card keeps polling, never wrongly done.
     status: STATUSES[api.status.toUpperCase()] ?? 'generating',

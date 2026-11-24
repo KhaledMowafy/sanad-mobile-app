@@ -8,6 +8,8 @@ import {
   startAssistantMessage,
   stopMessage,
   withId,
+  withCorrected,
+  withStage,
   withUsage,
   withWarning,
   type Message,
@@ -69,6 +71,9 @@ export class StreamAnswer {
           case 'token':
             message = appendToken(message, event.text);
             break;
+          case 'stage':
+            message = withStage(message, event.text);
+            break;
           case 'citation':
             message = addCitation(message, event.citation);
             break;
@@ -78,6 +83,7 @@ export class StreamAnswer {
           case 'done':
             conversationId = event.conversationId;
             message = completeMessage(withWarning(message, event.warning));
+            if (event.corrected > 0) message = withCorrected(message, event.corrected);
             draftRequestId = event.draftRequestId;
             if (event.usage) {
               message = withUsage(message, event.usage.answer);

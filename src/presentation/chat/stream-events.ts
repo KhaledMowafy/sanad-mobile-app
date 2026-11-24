@@ -12,6 +12,8 @@ import type {
 export type ChatStreamEvent =
   | { readonly type: 'start'; readonly conversationId: string | null }
   | { readonly type: 'delta'; readonly text: string }
+  /** The step the answer is at before its first word; null once it is past them. */
+  | { readonly type: 'stage'; readonly text: string | null }
   | { readonly type: 'citation'; readonly citation: CitationDto }
   | { readonly type: 'reference'; readonly reference: ReferenceDto }
   | {
@@ -28,6 +30,8 @@ export type ChatStreamEvent =
       readonly snapshot: UsageSnapshotDto | null;
       /** Set on the turn that finishes a contract wizard: the contract is being drafted. */
       readonly draftRequestId: string | null;
+      /** Sentences corrected against the articles' text before the answer was sent. */
+      readonly corrected: number;
     };
 
 export interface ChatStreamRequest {

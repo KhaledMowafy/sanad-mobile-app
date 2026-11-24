@@ -118,6 +118,7 @@ describe('StreamAnswer', () => {
             warning: null,
             usage: { answer: { prompt: 1, completion: 2, total: 3 }, snapshot: usage },
             draftRequestId: null,
+            corrected: 0,
           },
         ]),
       ),
@@ -147,6 +148,7 @@ describe('StreamAnswer', () => {
           warning: 'راجع النص الرسمي',
           usage: null,
           draftRequestId: null,
+          corrected: 0,
         },
       ]),
     );

@@ -424,7 +424,9 @@ export function createChatStore(options: ChatStoreOptions) {
             signal,
           )) {
             if (event.type === 'delta') {
-              patchLast((m) => ({ ...m, content: m.content + event.text }));
+              patchLast((m) => ({ ...m, content: m.content + event.text, stage: null }));
+            } else if (event.type === 'stage') {
+              patchLast((m) => ({ ...m, stage: event.text }));
             } else if (event.type === 'citation') {
               patchLast((m) =>
                 m.citations.some((c) => c.id === event.citation.id)
@@ -445,6 +447,8 @@ export function createChatStore(options: ChatStoreOptions) {
                 errorCode: event.errorCode,
                 warning: event.warning,
                 usage: event.usage,
+                stage: null,
+                ...(event.corrected > 0 ? { corrected: event.corrected } : {}),
               }));
               adoptUsage(event.snapshot);
               if (event.draftRequestId) void followDraft(event.draftRequestId);

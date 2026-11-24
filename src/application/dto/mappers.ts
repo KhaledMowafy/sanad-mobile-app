@@ -63,6 +63,8 @@ export function toMessageDto(message: Message): MessageDto {
     feedback: message.feedback,
     warning: message.warning,
     usage: message.usage,
+    ...(message.stage ? { stage: message.stage } : {}),
+    ...(message.corrected ? { corrected: message.corrected } : {}),
   };
 }
 
@@ -121,6 +123,7 @@ export function toDraftDto(draft: Draft): DraftDto {
     title: draft.title,
     stage: draft.stage,
     review: draft.review,
+    corrected: draft.corrected,
     prompt: draft.prompt,
     status: draft.status,
     error: draft.error,

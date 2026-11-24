@@ -118,7 +118,7 @@ export const AssistantMessage = memo(function AssistantMessage({ message }: { me
           <View style={styles.typing} accessibilityLiveRegion="polite">
             <ActivityIndicator size="small" color={colors.primary} />
             <AppText variant="caption" tone="subtle">
-              {t('message.typing')}
+              {!hasText && message.stage ? t('message.preparing') : t('message.typing')}
             </AppText>
           </View>
         ) : (
@@ -128,7 +128,20 @@ export const AssistantMessage = memo(function AssistantMessage({ message }: { me
         )}
       </View>
 
-      {hasText ? <AnswerMarkdown>{text}</AnswerMarkdown> : null}
+      {hasText ? (
+        <AnswerMarkdown>{text}</AnswerMarkdown>
+      ) : streaming && message.stage ? (
+        // A case is analysed for up to a minute before its first word: say which step it is at.
+        <AppText variant="small" tone="muted" accessibilityLiveRegion="polite">
+          {message.stage}
+        </AppText>
+      ) : null}
+
+      {!streaming && message.corrected ? (
+        <AppText variant="caption" tone="subtle">
+          {t('message.corrected', { count: message.corrected })}
+        </AppText>
+      ) : null}
 
       {message.warning ? (
         <Banner tone="warning">

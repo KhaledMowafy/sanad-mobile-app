@@ -17,6 +17,8 @@ export interface Draft {
   readonly stage: string | null;
   /** What the review found and the revision changed, as Markdown, on a described paper. */
   readonly review: string | null;
+  /** Citations corrected against the articles' text before the document was produced. */
+  readonly corrected: number;
   /** What the person typed. It is not a chat message, so the draft carries it. */
   readonly prompt: string;
   readonly status: DraftStatus;

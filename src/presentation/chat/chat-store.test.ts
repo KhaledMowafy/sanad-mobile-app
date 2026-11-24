@@ -53,6 +53,7 @@ describe('chat store', () => {
           usage: null,
           snapshot: null,
           draftRequestId: null,
+          corrected: 0,
           status: 'complete',
           errorCode: null,
           warning: 'راجع النص',
@@ -97,6 +98,7 @@ describe('chat store', () => {
           usage: null,
           snapshot: null,
           draftRequestId: null,
+          corrected: 0,
           status: 'complete',
           errorCode: null,
           warning: null,
@@ -126,6 +128,7 @@ describe('chat store', () => {
           usage: null,
           snapshot: null,
           draftRequestId: null,
+          corrected: 0,
           status: 'error',
           errorCode: 'generation_failed',
           warning: null,
@@ -215,6 +218,7 @@ describe('chat store', () => {
         messageId: null,
         conversationId: '1',
         draftRequestId: null,
+        corrected: 0,
       } as const;
     });
     const { store } = make(stream);
@@ -312,6 +316,7 @@ describe('chat store defence memo', () => {
     title: null,
     stage: null,
     review: null,
+    corrected: 0,
     prompt: 'وقائع',
     status,
     error: null,
@@ -490,6 +495,7 @@ describe('chat store usage', () => {
           usage: { prompt: 1, completion: 2, total: 3 },
           snapshot,
           draftRequestId: null,
+          corrected: 0,
         },
       ]),
     );
@@ -511,6 +517,7 @@ describe('chat store modes', () => {
       usage: null,
       snapshot: null,
       draftRequestId: null,
+      corrected: 0,
       ...over,
     }) as ChatStreamEvent;
 
@@ -537,6 +544,7 @@ describe('chat store modes', () => {
           title: null,
           stage: null,
           review: null,
+          corrected: 0,
           prompt: 'بيانات',
           status: 'queued' as const,
           error: null,
@@ -633,6 +641,7 @@ describe('chat store modes', () => {
         title: null,
         stage: null,
         review: null,
+        corrected: 0,
         prompt: '',
         status: 'done' as const,
         error: null,

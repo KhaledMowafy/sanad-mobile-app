@@ -110,6 +110,16 @@ describe('HttpDraftGateway', () => {
     });
   });
 
+  it('counts the citations a finished draft had corrected', async () => {
+    const { fetch } = fakeFetch([
+      json(200, envelope(rawDraft({ status: 'DONE', facts: { corrected: [{ article: 30 }, { article: 31 }] } }))),
+      json(200, envelope(rawDraft({ status: 'DONE', facts: { corrected: 'not a list' } }))),
+    ]);
+    const gateway = new HttpDraftGateway(clientFor(fetch));
+    expect(await gateway.get('31')).toMatchObject({ ok: true, value: { corrected: 2 } });
+    expect(await gateway.get('31')).toMatchObject({ ok: true, value: { corrected: 0 } });
+  });
+
   it('reads the step a draft is at while it is written, and nothing once it is done', async () => {
     const { fetch } = fakeFetch([
       json(

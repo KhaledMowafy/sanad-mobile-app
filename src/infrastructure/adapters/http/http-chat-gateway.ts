@@ -18,6 +18,8 @@ export const NEW_CONVERSATION_TITLE = 'محادثة جديدة';
  */
 const streamEventSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('token'), text: z.string() }),
+  /** Only when the request asks for it (`events: ["stage"]`). `stage` is a key; `text` is shown. */
+  z.object({ type: z.literal('stage'), stage: z.string().nullish(), text: z.string() }),
   z.object({
     type: z.literal('error'),
     message: z.string().nullish(),
@@ -32,6 +34,8 @@ const streamEventSchema = z.discriminatedUnion('type', [
     usage: z.unknown().optional(),
     /** Set only on the turn that finishes a contract wizard. */
     draft_request_id: z.number().nullish(),
+    /** Each sentence corrected before the answer was sent, as {article, before, after}. */
+    corrected: z.array(z.unknown()).nullish(),
   }),
 ]);
 
@@ -104,6 +108,9 @@ export class HttpChatGateway implements ChatGateway {
         text: request.content,
         attachments: attachmentIds,
         use_rag: true,
+        // A case answer works for up to a minute before its first word; with stages the screen
+        // says what it is doing, and the answer arrives already checked and corrected.
+        events: ['stage'],
         // Sent only when asked: the backend defaults it to false and refuses it with a memo.
         ...(request.reviewContract ? { review_contract: true } : {}),
       },
@@ -128,6 +135,8 @@ export class HttpChatGateway implements ChatGateway {
       const event = parsed.data;
       if (event.type === 'token') {
         yield { type: 'token', text: event.text };
+      } else if (event.type === 'stage') {
+        if (event.text.trim()) yield { type: 'stage', text: event.text.trim() };
       } else if (event.type === 'error') {
         // The terminating "done" still follows; StreamAnswer stops reading at the error.
         yield { type: 'error', code: 'generation_failed' };
@@ -146,6 +155,7 @@ export class HttpChatGateway implements ChatGateway {
           warning: event.warning?.trim() || null,
           usage: toAnswerUsage(event.usage),
           draftRequestId: event.draft_request_id == null ? null : String(event.draft_request_id),
+          corrected: event.corrected?.length ?? 0,
         };
         return;
       }

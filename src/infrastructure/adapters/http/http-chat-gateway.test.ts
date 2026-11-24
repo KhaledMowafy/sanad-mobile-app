@@ -68,6 +68,7 @@ describe('HttpChatGateway', () => {
         warning: null,
         usage: null,
         draftRequestId: null,
+        corrected: 0,
       },
     ]);
     expect(calls).toHaveLength(1);
@@ -78,7 +79,34 @@ describe('HttpChatGateway', () => {
       text: 'ما نص المادة 147؟',
       attachments: [],
       use_rag: true,
+      events: ['stage'],
     });
+  });
+
+  it('reads the steps before the first word, and how many sentences were corrected', async () => {
+    const { fetch } = fakeFetch([
+      sse([
+        { type: 'stage', stage: 'plan', text: 'جارٍ تحليل وقائع القضية وتحديد المسائل القانونية فيها' },
+        { type: 'stage', stage: 'check', text: 'جارٍ مطابقة كل مادة مستشهد بها بنصها' },
+        { type: 'stage', stage: 'send', text: '  ' },
+        { type: 'token', text: 'الوصف القانوني' },
+        {
+          type: 'done',
+          message_id: 7,
+          citations: [],
+          warning: null,
+          corrected: [{ article: 236, before: 'المادة 241', after: 'المادة 236' }],
+        },
+      ]),
+    ]);
+    const events = await collect(gatewayFor(fetch).streamAnswer(request()));
+    // A blank stage text is nothing to show.
+    expect(events.slice(0, 3)).toEqual([
+      { type: 'stage', text: 'جارٍ تحليل وقائع القضية وتحديد المسائل القانونية فيها' },
+      { type: 'stage', text: 'جارٍ مطابقة كل مادة مستشهد بها بنصها' },
+      { type: 'token', text: 'الوصف القانوني' },
+    ]);
+    expect(events.at(-1)).toMatchObject({ type: 'done', corrected: 1 });
   });
 
   it('sends review_contract true only when asked, and reads the wizard draft id', async () => {
@@ -257,6 +285,7 @@ describe('HttpChatGateway', () => {
         warning: null,
         usage: null,
         draftRequestId: null,
+        corrected: 0,
       },
     ]);
   });
@@ -315,6 +344,7 @@ describe('HttpChatGateway', () => {
         warning: null,
         usage: null,
         draftRequestId: null,
+        corrected: 0,
       },
     ]);
   });
@@ -418,6 +448,26 @@ describe('codeForError', () => {
 });
 
 describe('end to end with StreamAnswer', () => {
+  it('shows each step until the first word, then the corrected count', async () => {
+    const { fetch } = fakeFetch([
+      sse([
+        { type: 'stage', stage: 'search', text: 'جارٍ البحث في النصوص' },
+        { type: 'token', text: 'نص' },
+        { type: 'done', message_id: 8, citations: [], warning: null, corrected: [{}, {}] },
+      ]),
+    ]);
+    const answer = new StreamAnswer(gatewayFor(fetch), new FixedClock(), new SequentialIds());
+    const stages: (string | null | undefined)[] = [];
+    let last;
+    for await (const snapshot of answer.execute(request())) {
+      stages.push(snapshot.message.stage);
+      last = snapshot.message;
+    }
+    expect(stages).toContain('جارٍ البحث في النصوص');
+    expect(last).toMatchObject({ status: 'complete', content: 'نص', corrected: 2 });
+    expect(last?.stage ?? null).toBeNull();
+  });
+
   it('produces a complete assistant message with the server id and warning', async () => {
     const { fetch } = fakeFetch([
       sse([
