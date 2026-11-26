@@ -13,6 +13,7 @@ import { useTheme } from '@/theme/theme';
 import { radius } from '@/theme/tokens';
 import { AnswerMarkdown } from './answer-markdown';
 import { CitationList } from './citation-list';
+import { ReferenceList } from './reference-list';
 
 const ICON = require('../../../assets/brand/app-icon-sm.png');
 
@@ -93,9 +94,11 @@ export const AssistantMessage = memo(function AssistantMessage({ message }: { me
     message.errorCode && t.has(`errors.${message.errorCode}`) ? message.errorCode : 'unknown';
 
   const copy = async (kind: 'answer' | 'references') => {
-    const references = message.citations
-      .map((c) => `- ${c.lawName}, ${t('citation.short', { article: c.article })}`)
-      .join('\n');
+    const references = [
+      ...message.citations.map((c) => `- ${c.lawName}, ${t('citation.short', { article: c.article })}`),
+      // What the answer drew on; a related ruling is not a source it claims.
+      ...message.references.filter((r) => r.used).map((r) => `- ${r.label}`),
+    ].join('\n');
     const value =
       kind === 'references' && references ? `${text}\n\n${t('message.sources')}:\n${references}` : text;
     await Clipboard.setStringAsync(value);
@@ -161,6 +164,10 @@ export const AssistantMessage = memo(function AssistantMessage({ message }: { me
 
       {message.citations.length > 0 ? <CitationList citations={message.citations} /> : null}
 
+      {!streaming && message.references.length > 0 ? (
+        <ReferenceList references={message.references} />
+      ) : null}
+
       {!streaming && hasText ? (
         <View accessibilityRole="toolbar" accessibilityLabel={t('message.actions')} style={styles.toolbar}>
           <Action
@@ -170,7 +177,7 @@ export const AssistantMessage = memo(function AssistantMessage({ message }: { me
           >
             <Copy size={18} color={colors.textMuted} />
           </Action>
-          {message.citations.length > 0 ? (
+          {message.citations.length > 0 || message.references.some((r) => r.used) ? (
             <Action
               label={copied === 'references' ? t('message.copied') : t('message.copyWithReferences')}
               done={copied === 'references'}

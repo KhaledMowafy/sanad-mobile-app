@@ -409,6 +409,19 @@
       "articleTitle": "المادة {article}",
       "lawLineFull": "{law}، رقم <n>{number}</n> لسنة <y>{year}</y>"
     },
+    "references": {
+      "label": "المراجع القضائية والفقهية",
+      "used": "المراجع",
+      "related": "مراجع ذات صلة",
+      "relatedHint": "استُرجعت لهذا السؤال ولم تستند إليها الإجابة صراحة",
+      "kind": {
+        "CASSATION": "حكم نقض",
+        "COMMENTARY": "شرح فقهي",
+        "FORENSIC": "مرجع طبي شرعي",
+        "PRACTICE": "مرجع عملي",
+        "OTHER": "مرجع"
+      }
+    },
     "errors": {
       "unauthenticated": "انتهت جلستك. سجّل الدخول من جديد.",
       "forbidden": "لا يمكن تنفيذ هذا الطلب لحسابك.",

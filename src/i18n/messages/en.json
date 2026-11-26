@@ -409,6 +409,19 @@
       "articleTitle": "Article {article}",
       "lawLineFull": "{law}, No. <n>{number}</n> of <y>{year}</y>"
     },
+    "references": {
+      "label": "Rulings and commentary",
+      "used": "Rulings and books",
+      "related": "Related",
+      "relatedHint": "retrieved for this question, not named in the answer",
+      "kind": {
+        "CASSATION": "Cassation ruling",
+        "COMMENTARY": "Commentary",
+        "FORENSIC": "Forensic medicine",
+        "PRACTICE": "Practice guide",
+        "OTHER": "Reference"
+      }
+    },
     "errors": {
       "unauthenticated": "Your session has ended. Sign in again.",
       "forbidden": "This request cannot be completed for your account.",
